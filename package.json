@@ -1,0 +1,21 @@
+{
+    "name": "e-dip-monitor",
+    "version": "1.0.0",
+    "description": "YES",
+    "main": "main.js",
+    "scripts": {
+        "start": "electron .",
+        "rebuild": "electron-rebuild"
+    },
+    "author": "KOUAKOU Mouahé",
+    "license": "MIT",
+    "dependencies": {
+        "electron-rebuild": "^1.11.0",
+        "electron-tools": "^2.4.2",
+        "node-pty": "^0.9.0",
+        "xterm": "^4.12.0"
+    },
+    "devDependencies": {
+        "electron": "^9.2.0"
+    }
+}

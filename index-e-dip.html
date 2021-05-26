@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="styles/tailwind.min.css">
+    <link rel="stylesheet" href="styles/configuation.css">
+    <title>interface principale</title>
+    <script src="scripts/ajout-serveur-local.js"></script>
+    <script src="scripts/ajout-surveillance-serveur-distant.js"></script>
+    <script src="scripts/configuration-serveur-locaux.js"></script>
+    <script src="scripts/configuration-surveillance.js"></script>
+    <script src="scripts/surveillance.js"></script>
+    <script src="scripts/main.js"></script>
+
+    <link rel="stylesheet" href="node_modules/xterm/css/xterm.css">
+    <script src="node_modules/xterm/lib/xterm.js"></script>
+</head>
+
+<body class="flex flex-col h-screen">
+    <script>
+        function timeLocalServer(elementID) {
+            let temps = { h:0, m:0, s:0};
+
+            const f = (t) => t < 10 ? "0" + t : t
+
+            setInterval(() => {
+                temps.s += 1;
+                if (temps.s === 60) {
+                    temps.s = 0;
+                    temps.m += 1;
+                    if (temps.m == 60) {
+                        temps.m = 0;
+                        temps.h += 1
+                    }
+                }
+
+                document.getElementById(elementID).innerHTML = `${f(temps.h)}:${f(temps.m)}:${f(temps.s)}`;
+            }, 1000);
+        }
+
+    timeLocalServer("temps")
+    </script>
+
+    <!-- barre de navigation -->
+    <nav class="flex border-2 items-center bg-blue-700">
+        <!-- Menu Ajouter-->
+        <div class="flex flex-col mr-4">
+            <!-- Titre -->
+            <input
+                type="button" value="Ajouter" 
+                onclick="show('add')"
+                class="bg-blue-700 text-white p-2 ease-in-out duration-100 hover:bg-blue-400 cursor-pointer"
+            >
+            <!-- Options -->
+            <div
+                name="add" id="add" hidden
+                class="bg-blue-500 absolute mt-10 text-white cursor-pointer"
+            >
+                <!-- Serveur local -->
+                <div onclick="show('ajoutServeurLocal')" class="p-1 pl-2 pr-2 hover:bg-blue-400">Serveur local</div>
+
+                <!-- Ligne séparatrice -->
+                <div class="border-b-2 border-white"></div>
+
+                <!-- Surveillance serveur -->
+                <div onclick="show('surveillanceServeurDistant')" class="p-1 pl-2 pr-2 hover:bg-blue-400">Surveillance serveur</div>
+            </div>
+        </div>
+
+        <!-- Menu Config-->
+        <div class="flex flex-col mr-4">
+            <!-- Titre -->
+            <input type="button" value="Configurer" onclick="show('config')"
+                class="bg-blue-700 text-white p-2 ease-in-out duration-100 hover:bg-blue-400 cursor-pointer">
+            <!-- Options -->
+            <div name="config" id="config" hidden class="bg-blue-500 absolute mt-10 text-white cursor-pointer">
+                <!-- Serveur local -->
+                <div onclick="show('configurationServeurLocaux')" class="p-1 pl-2 pr-2 hover:bg-blue-400">Serveur local</div>
+        
+                <!-- Ligne séparatrice -->
+                <div class="border-b-2 border-white"></div>
+        
+                <!-- Surveillance serveur -->
+                <div onclick="show('configurationSurveillance')" class="p-1 pl-2 pr-2 hover:bg-blue-400">Surveillance serveur</div>
+            </div>
+        </div>
+
+        <!-- Menu Surveillance-->
+        <div class="flex flex-col">
+            <!-- Titre -->
+            <input type="button" value="Surveiller" onclick="show('watch');afficheListeServeur()"
+                class="bg-blue-700 text-white p-2 ease-in-out duration-100 hover:bg-blue-400 cursor-pointer">
+        </div>
+
+        <div class="flex-grow"></div>
+        
+        <!--Help-->
+        <aside>
+            <p class="flex items-center bg-blue-700 p-2 ease-in-out duration-100 hover:bg-blue-400 cursor-pointer">
+                <label for="help"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1em" height="1em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet"
+                    viewBox="0 0 24 24"><path d="M15.07 11.25l-.9.92C13.45 12.89 13 13.5 13 15h-2v-.5c0-1.11.45-2.11 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41a2 2 0 0 0-2-2a2 2 0 0 0-2 2H8a4 4 0 0 1 4-4a4 4 0 0 1 4 4a3.2 3.2 0 0 1-.93 2.25M13 19h-2v-2h2M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10a10 10 0 0 0 10-10c0-5.53-4.5-10-10-10z" fill="#A5B4FC"/></svg></label>
+                
+                <input type="button" id="help" value="Aide" class="bg-transparent text-white">
+            </p>
+        </aside>
+    
+    
+    </nav>
+    <aside class="flex flex-col">
+        
+        <!--Barre Rédémarrer/Arrêter-->
+        <section class="flex items-center justify-end p-2">
+            
+            <!-- Rédemarrer -->
+            <p class="flex items-center mr-4">
+                <label for="reboot" class="mr-1"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1em" height="1em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path d="M12 4c2.1 0 4.1.8 5.6 2.3c3.1 3.1 3.1 8.2 0 11.3c-1.8 1.9-4.3 2.6-6.7 2.3l.5-2c1.7.2 3.5-.4 4.8-1.7c2.3-2.3 2.3-6.1 0-8.5C15.1 6.6 13.5 6 12 6v4.6l-5-5l5-5V4M6.3 17.6C3.7 15 3.3 11 5.1 7.9l1.5 1.5c-1.1 2.2-.7 5 1.2 6.8c.5.5 1.1.9 1.8 1.2l-.6 2c-1-.4-1.9-1-2.7-1.8z" fill="#0c0"/></svg></label>
+                <input type="button" value="Redémarrer" id="reboot" class="bg-white">
+            </p>
+
+            <!--Arrêter-->
+            <p class="flex items-center">
+                <label for="stop" class="mr-1"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1em" height="1em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 32 32"><g fill="none"><path d="M16 4C9.373 4 4 9.373 4 16s5.373 12 12 12s12-5.373 12-12S22.627 4 16 4zM2 16C2 8.268 8.268 2 16 2s14 6.268 14 14s-6.268 14-14 14S2 23.732 2 16zm8-4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2v-8z" fill="red"/></g></svg></label>
+                <input type="button" id="stop" value="Arrêter" class="bg-white">
+            </p>
+        </section>
+
+        <!--En tête du terminal-->
+        <section class="flex items-start">
+            <p>
+                <input type="button" value="Nom du serveur" class="bg-gray-500 rounded-t-xl text-lg">
+            </p>
+            <p>
+                <input type="button" value="+" class="bg-gray-500 rounded-t-xl text-lg">
+            </p>
+        </section>
+    </aside>
+
+    <button id="bouton"></button>
+
+    <!-- Terminal -->
+    <aside class="flex-grow">
+        <script>
+            let show2 = (id) => {
+                let b = ["terminal", "terminal2"]
+                b = b.filter(i => i !== id)
+
+                for (a of b) {
+                    document.getElementById(a).hidden = true
+                }
+                document.getElementById(id).hidden = !document.getElementById(id).hidden
+            }
+        </script>
+        <div id="choix">
+            <p>
+                <input type="button" value="Afficher Powershell" onclick="show2('terminal')">
+            </p>
+            <p>
+                <input type="button" value="Afficher Python" onclick="show2('terminal2')">
+            </p>
+        </div>
+        
+        <div id="terminal" style="max-width: 100%"></div>
+        <div id="terminal2" hidden style="max-width: 100%;"></div>
+        
+        <script src="index.js"></script>
+    </aside>
+    
+    <!-- pied de page -->
+    <aside class="flex items-center bg-gray-500">
+        <p>
+            <label for="fichierdubas">Fichier</label>
+            <input type="text" placeholder="C://..." id="fichierdubas" class="bg-gray-400">
+        </p>
+        <p class="flex-grow"></p>
+        <p>
+            <label for="time">Temps écoulé: </label>
+            <label id="temps"></label>
+        </p>
+    </aside>
+
+    
+    
+    
+    <!-- Pop ups - Ajout serveur local -->
+    <div id="ajoutServeurLocal" class="absolute" hidden>
+        <div class="flex w-screen h-screen text-sm absolute">
+            <!-- Fond transparent -->
+            <div class="absolute w-screen h-screen bg-gray-300 opacity-50" onclick="show('ajoutServeurLocal')"></div>
+            
+            <!-- Centrer horizontalement -->
+            <div class="flex-grow"></div>
+            
+            <!-- Contenu -->
+            <div class="flex flex-col">
+                <!-- Centrer verticalement -->
+                <div class="flex-grow"></div>
+        
+                <div class="flex flex-col items-center border-2 shadow-2xl rounded-2xl p-8 bg-white z-50">
+                    <h2 style="font-family: Georgia, 'Times New Roman', Times, serif; font-size: x-large;" class="mb-6">
+                        Enregistrement serveur local</h2>
+                    <div class="flex flex-col">
+                        <!-- Nom du serveur -->
+                        <section>
+                            <p class="flex flex-col mb-2">
+                                <label for="serveur" style="font-family:Arial, Helvetica, sans-serif" class="ml-2">
+                                    Nom du serveur
+                                </label>
+                                <input type="text" id="serveur" name="serveur"
+                                    class="border-2 focus:border-blue-500 border-gray-500 p-1 rounded-2xl shadow focus:outline-none pr-2 pl-2"
+                                    autocomplete="off">
+                            </p>
+                        </section>
+        
+                        <!-- Adresse et port -->
+                        <section class="flex items center mb-2">
+                            <p class="flex flex-col mr-4 flex-grow">
+                                <label for="address" style="font-family:Arial, Helvetica, sans-serif" class="ml-2">
+                                    Adresse
+                                </label>
+                                <input type="text" id="address" name="address"
+                                    class="border-2 focus:border-blue-500 border-gray-500 p-1 rounded-2xl shadow focus:outline-none pr-2 pl-2"
+                                    autocomplete="off">
+                            </p>
+        
+                            <p class="flex flex-col w-24">
+                                <label for="port" style="font-family:Arial, Helvetica, sans-serif" class="ml-2">
+                                    Port
+                                </label>
+                                <input type="number" id="port" name="port"
+                                    class="border-2 focus:border-blue-500 border-gray-500 p-1 rounded-2xl shadow focus:outline-none pr-2 pl-2"
+                                    autocomplete="off">
+                            </p>
+        
+                        </section>
+        
+                        <!-- Fichier -->
+                        <section class="mb-2">
+                            <p class="flex flex-col">
+                                <label for="fichier" style="font-family:Arial, Helvetica, sans-serif;" class="ml-2">
+                                    Fichier
+                                </label>
+                                <input type="text" id="fichier" name="fichier"
+                                    class="border-2 focus:border-blue-500 border-gray-500 p-1 rounded-2xl shadow focus:outline-none pr-2 pl-2"
+                                    autocomplete="off">
+                            </p>
+                        </section>
+        
+                        <!-- Oui or Non -->
+                        <section class="flex items-center">
+                            <input type="checkbox" id="lancerAuDemarrage" class="mr-1"><label for="lancerAuDemarrage">Lancer au
+                                démarrage</label>
+                        </section>
+        
+                        <!-- Enregister ou annuler -->
+                        <aside class="flex flex items-center justify-end mt-4">
+                            <p>
+                                <input type="button" value="Annuler" 
+                                class="mr-2 bg-white cursor-pointer" style="color:red;" 
+                                onclick="show('ajoutServeurLocal')">
+                            </p>
+        
+                            <p class="flex items-center hover:bg-blue-600 bg-gray-600 rounded shadow p-1"
+                                onclick="show('ajoutServeurLocal'),enregistrerServeurLocal()" 
+                                >
+                                <label for="save"><svg xmlns="http://www.w3.org/2000/svg"
+                                        xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false"
+                                        width="1em" height="1em"
+                                        style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);"
+                                        preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
+                                        <path fill="none" d="M9 14h6v5H9zm2-9h2v2h-2z" />
+                                        <path fill="none"
+                                            d="M7 14c0-1.103.897-2 2-2h6c1.103 0 2 .897 2 2v5h2.001L19 8.414L15.586 5H15v4H7V5H5v14h2v-5z" />
+                                        <path
+                                            d="M5 21h14c1.103 0 2-.897 2-2V8a.997.997 0 0 0-.293-.707l-4-4A.996.996 0 0 0 16 3H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2zm10-2H9v-5h6v5zM13 7h-2V5h2v2zM5 5h2v4h8V5h.586L19 8.414L19.001 19H17v-5c0-1.103-.897-2-2-2H9c-1.103 0-2 .897-2 2v5H5V5z"
+                                            fill="white" />
+                                    </svg></label>
+                                <input type="button" value="Enregistrer" id="save"
+                                    class=" bg-transparent text-white p-1 cursor-pointer">
+                            </p>
+                        </aside>
+                    </div>
+                </div>
+        
+                <div class="flex-grow"></div>
+            </div>
+        
+            <div class="flex-grow"></div>
+        </div>        
+    </div>
+
+    <!-- Pop-ups - Ajout Surveillannce serveur distant -->
+    <div id="surveillanceServeurDistant" class="absolute" hidden>
+        <div class="flex w-screen h-screen text-sm absolute">
+            <!-- Fond transparent -->
+            <div class="absolute w-screen h-screen bg-gray-300 opacity-50" onclick="show('surveillanceServeurDistant')"></div>
+
+            <!-- Centrer horizontalement -->
+            <div class="flex-grow"></div>
+        
+            <div class="flex flex-col">
+                <!-- Centrer verticalement -->
+                <div class="flex-grow"></div>
+        
+                <div class="flex flex-col items-center border-2 shadow-2xl rounded-2xl p-8 bg-white z-50">
+                    <h2 style="font-family: Georgia, 'Times New Roman', Times, serif; font-size: x-large;" class="mb-6">
+                        Surveillance serveur distant</h2>
+                    <div class="flex flex-col">
+                        <!-- Nom du serveur -->
+                        <section>
+                            <p class="flex flex-col mb-2">
+                                <label for="serveur1" style="font-family:Arial, Helvetica, sans-serif" class="ml-2">
+                                    Nom du serveur
+                                </label>
+                                <input type="text" id="serveur1" name="serveur1"
+                                    class="border-2 focus:border-blue-500 border-gray-500 p-1 rounded-2xl shadow focus:outline-none pr-2 pl-2"
+                                    autocomplete="off">
+                            </p>
+                        </section>
+        
+                        <!-- Adresse et port -->
+                        <section class="flex items center mb-2">
+                            <p class="flex flex-col mr-4 flex-grow">
+                                <label for="address1" style="font-family:Arial, Helvetica, sans-serif" class="ml-2">
+                                    Adresse
+                                </label>
+                                <input type="text" id="address1" name="address1"
+                                    class="border-2 focus:border-blue-500 border-gray-500 p-1 rounded-2xl shadow focus:outline-none pr-2 pl-2"
+                                    autocomplete="off">
+                            </p>
+        
+                            <p class="flex flex-col w-24">
+                                <label for="port1" style="font-family:Arial, Helvetica, sans-serif" class="ml-2">
+                                    Port
+                                </label>
+                                <input type="number" id="port1" name="port1"
+                                    class="border-2 focus:border-blue-500 border-gray-500 p-1 rounded-2xl shadow focus:outline-none pr-2 pl-2"
+                                    autocomplete="off">
+                            </p>
+        
+                        </section>
+        
+                        <!-- Féquence de vérification -->
+                        <section>
+                            <div class="flex flex-col mb-2">
+        
+                                <p style="font-family:Arial, Helvetica, sans-serif;" class="ml-2">
+                                    Fréquence de vérification
+                                </p>
+        
+                                <div class="flex flex-row items-center">
+        
+                                    <!-- minutes -->
+                                    <p class="flex flex-row-reverse mr-3 items-center"
+                                        style="font-family:Arial, Helvetica, sans-serif;">
+                                        <label for="min">min</label>
+                                        <input type="number" id="min" name="min"
+                                            class="border-2 focus:border-blue-500 border-gray-500 p-1 rounded-2xl shadow focus:outline-none pr-2 pl-2 w-32"
+                                            autocomplete="off">
+                                    </p>
+        
+                                    <!-- secondes -->
+                                    <p class="flex flex-row-reverse items-center"
+                                        style="font-family:Arial, Helvetica, sans-serif;">
+                                        <label for="sec">sec</label>
+                                        <input type="number" id="sec" name="sec" value="30"
+                                            class="border-2 focus:border-blue-500 border-gray-500 p-1 rounded-2xl shadow focus:outline-none pr-2 pl-2 w-16"
+                                            autocomplete="off">
+                                    </p>
+        
+                                    <div class="flex-grow"></div>
+                                </div>
+        
+                            </div>
+                        </section>
+        
+                        <!-- Enregister ou annuler -->
+                        <aside class="flex flex items-center justify-end mt-4">
+                            <p>
+                                <input type="button" value="Annuler" 
+                                class="mr-2 bg-white cursor-pointer" style="color:red;"
+                                onclick="show('surveillanceServeurDistant')">
+                            </p>
+        
+                            <p class="flex items-center hover:bg-blue-600 bg-gray-600 rounded shadow p-1"
+                                onclick="enregistrerSurveillance();show('surveillanceServeurDistant')"
+                                >
+                                <label for="save"><svg xmlns="http://www.w3.org/2000/svg"
+                                        xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false"
+                                        width="1em" height="1em"
+                                        style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);"
+                                        preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
+                                        <path fill="none" d="M9 14h6v5H9zm2-9h2v2h-2z" />
+                                        <path fill="none"
+                                            d="M7 14c0-1.103.897-2 2-2h6c1.103 0 2 .897 2 2v5h2.001L19 8.414L15.586 5H15v4H7V5H5v14h2v-5z" />
+                                        <path
+                                            d="M5 21h14c1.103 0 2-.897 2-2V8a.997.997 0 0 0-.293-.707l-4-4A.996.996 0 0 0 16 3H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2zm10-2H9v-5h6v5zM13 7h-2V5h2v2zM5 5h2v4h8V5h.586L19 8.414L19.001 19H17v-5c0-1.103-.897-2-2-2H9c-1.103 0-2 .897-2 2v5H5V5z"
+                                            fill="white" />
+                                    </svg></label>
+                                <input type="button" value="Enregistrer" id="save"
+                                    class="bg-transparent text-white p-1 cursor-pointer">
+                            </p>
+                        </aside>
+                    </div>
+                </div>
+        
+                <div class="flex-grow"></div>
+            </div>
+        
+            <div class="flex-grow"></div>
+        </div>
+    </div>
+
+    <!-- Pop-ups - Configuration serveur locaux -->
+    <div id="configurationServeurLocaux" class="absolute" hidden>
+        <div class="flex w-screen h-screen text-sm absolute">
+            <!-- Fond transparent -->
+            <div class="absolute w-screen h-screen bg-gray-300 opacity-50" onclick="show('configurationServeurLocaux')"></div>
+
+            <!-- Centrer horizontalement -->
+            <div class="flex-grow"></div>
+        
+            <div class="flex flex-col">
+                <!-- Centrer verticalement -->
+                <div class="flex-grow"></div>
+        
+                <div class="flex flex-col items-center border-2 shadow-2xl rounded-2xl p-8 bg-white z-50">
+                    <h2 style="font-family: Georgia, 'Times New Roman', Times, serif; font-size: x-large;" class="mb-6">
+                        Configuration des serveurs locaux</h2>
+                    <div class="flex flex-col">
+                        <!-- Menu Nom serveur-->
+                        <div class="flex flex-col mr-4">
+                            <!-- Titre -->
+                            <p class="flex flex-row bg-blue-700 text-white text-left p-2 ease-in-out duration-100 hover:bg-blue-400 cursor-pointer leading-3"
+                                onclick="show('listeNomServeurEnregister');afficheNomServeur()">
+                                <input type="button" value="Nom serveur" 
+                                    class="bg-transparent text-white leading-3">
+                            
+                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
+                                    focusable="false" width="1em" height="1em"
+                                    style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);"
+                                    preserveAspectRatio="xMidYMid meet" viewBox="0 0 20 20">
+                                    <path d="M15 8l-4.03 6L7 8h8z" fill="white" />
+                                </svg>
+                            </p>
+                            <!-- Options -->
+                            <div name="listeNomServeurEnregister" id="listeNomServeurEnregister" hidden
+                                class="bg-blue-500 absolute mt-8 text-white cursor-pointer">
+                                <!-- Serveur local amené par une fonction-->
+        
+        
+                            </div>
+                        </div>
+        
+                        <!-- Nom du serveur -->
+                        <section>
+                            <p class="flex flex-col mb-2">
+                                <label for="serveurLocal" style="font-family:Arial, Helvetica, sans-serif" class="ml-2">
+                                    Nom du serveur
+                                </label>
+                                <input type="text" id="serveurLocal" name="serveurLocal"
+                                    class="border-2 focus:border-blue-500 border-gray-500 p-1 rounded-2xl shadow focus:outline-none pr-2 pl-2"
+                                    autocomplete="off">
+                            </p>
+                        </section>
+        
+                        <!-- Adresse et port -->
+                        <section class="flex items center mb-2">
+                            <p class="flex flex-col mr-4 flex-grow">
+                                <label for="addressLocal" style="font-family:Arial, Helvetica, sans-serif" class="ml-2">
+                                    Adresse
+                                </label>
+                                <input type="text" id="addressLocal" name="addressLocal"
+                                    class="border-2 focus:border-blue-500 border-gray-500 p-1 rounded-2xl shadow focus:outline-none pr-2 pl-2"
+                                    autocomplete="off">
+                            </p>
+        
+                            <p class="flex flex-col w-24">
+                                <label for="portLocal" style="font-family:Arial, Helvetica, sans-serif" class="ml-2">
+                                    Port
+                                </label>
+                                <input type="number" id="portLocal" name="portLocal"
+                                    class="border-2 focus:border-blue-500 border-gray-500 p-1 rounded-2xl shadow focus:outline-none pr-2 pl-2"
+                                    autocomplete="off">
+                            </p>
+        
+                        </section>
+        
+                        <!-- Fichier -->
+                        <section class="mb-2">
+                            <p class="flex flex-col">
+                                <label for="fichierLocal" style="font-family:Arial, Helvetica, sans-serif;" class="ml-2">
+                                    Fichier
+                                </label>
+                                <input type="text" id="fichierLocal" name="fichierLocal"
+                                    class="border-2 focus:border-blue-500 border-gray-500 p-1 rounded-2xl shadow focus:outline-none pr-2 pl-2"
+                                    autocomplete="off">
+                            </p>
+                        </section>
+        
+                        <!-- Oui or Non -->
+                        <section class="flex items-center">
+                            <input type="checkbox" id="lancerAuDemarrageLocal" class="mr-1"><label for="lancerAuDemarrageLocal">Lancer au
+                                démarrage</label>
+                        </section>
+        
+                        <!-- Enregister ou annuler -->
+                        <aside class="flex flex items-center justify-end mt-4">
+                            <p>
+                                <input type="button" value="Annuler" 
+                                class="mr-2 bg-white cursor-pointer" style="color:red;"
+                                onclick="show('configurationServeurLocaux')">
+                            </p>
+        
+                            <p class="flex items-center bg-blue-600 rounded shadow p-1"
+                                onclick="modifierServeurLocal();show('configurationServeurLocaux')"
+                            >
+                                <label for="save"><svg xmlns="http://www.w3.org/2000/svg"
+                                        xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false"
+                                        width="1em" height="1em"
+                                        style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);"
+                                        preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
+                                        <path fill="none" d="M9 14h6v5H9zm2-9h2v2h-2z" />
+                                        <path fill="none"
+                                            d="M7 14c0-1.103.897-2 2-2h6c1.103 0 2 .897 2 2v5h2.001L19 8.414L15.586 5H15v4H7V5H5v14h2v-5z" />
+                                        <path
+                                            d="M5 21h14c1.103 0 2-.897 2-2V8a.997.997 0 0 0-.293-.707l-4-4A.996.996 0 0 0 16 3H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2zm10-2H9v-5h6v5zM13 7h-2V5h2v2zM5 5h2v4h8V5h.586L19 8.414L19.001 19H17v-5c0-1.103-.897-2-2-2H9c-1.103 0-2 .897-2 2v5H5V5z"
+                                            fill="white" />
+                                    </svg></label>
+                                <input type="button" value="Enregistrer" id="save"
+                                    class=" bg-blue-600 text-white p-1 cursor-pointer">
+                            </p>
+                        </aside>
+                    </div>
+                </div>
+        
+                <div class="flex-grow"></div>
+            </div>
+        
+            <div class="flex-grow"></div>
+        </div>
+    </div>
+
+    <!-- Pop-ups - Configuration surveillance des serveurs -->
+    <div id="configurationSurveillance" class="absolute" hidden>
+        <div class="flex w-screen h-screen text-sm absolute">
+            <!-- Fond transparent -->
+            <div class="absolute w-screen h-screen bg-gray-300 opacity-50" onclick="show('configurationSurveillance')"></div>
+        <!-- Centrer horizontalement -->
+        <div class="flex-grow"></div>
+    
+        <div class="flex flex-col">
+            <!-- Centrer verticalement -->
+            <div class="flex-grow"></div>
+    
+            <div class="flex flex-col items-center border-2 shadow-2xl rounded-2xl p-8 bg-white z-50">
+                <h2 style="font-family: Georgia, 'Times New Roman', Times, serif; font-size: x-large;" class="mb-6">
+                    Surveillance serveur distant</h2>
+                <div class="flex flex-col">
+                    <!-- Menu Nom serveur-->
+                    <div class="flex flex-col mr-4">
+                        <!-- Titre -->
+                        <p class="flex flex-row bg-blue-700 text-white text-left p-2 ease-in-out duration-100 hover:bg-blue-400 cursor-pointer leading-3"
+                            onclick="show('listeNomServeurSurveiller');afficheNomSurveillance()">
+                            <input type="button" value="Nom serveur" class="bg-transparent text-white leading-3">
+    
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                aria-hidden="true" focusable="false" width="1em" height="1em"
+                                style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);"
+                                preserveAspectRatio="xMidYMid meet" viewBox="0 0 20 20">
+                                <path d="M15 8l-4.03 6L7 8h8z" fill="white" />
+                            </svg>
+                        </p>
+                        <!-- Options -->
+                        <div name="listeNomServeurSurveiller" id="listeNomServeurSurveiller" hidden
+                            class="bg-blue-500 absolute mt-8 text-white cursor-pointer">
+                            <!-- Serveur local amené par une fonction-->
+    
+                        </div>
+                    </div>
+    
+                    <!-- Nom du serveur -->
+                    <section>
+                        <p class="flex flex-col mb-2">
+                            <label for="serveurSurveiller" style="font-family:Arial, Helvetica, sans-serif" class="ml-2">
+                                Nom du serveur
+                            </label>
+                            <input type="text" id="serveurSurveiller" name="serveurSurveiller"
+                                class="border-2 focus:border-blue-500 border-gray-500 p-1 rounded-2xl shadow focus:outline-none pr-2 pl-2"
+                                autocomplete="off">
+                        </p>
+                    </section>
+    
+                    <!-- Adresse et port -->
+                    <section class="flex items center mb-2">
+                        <p class="flex flex-col mr-4 flex-grow">
+                            <label for="addressSurveiller" style="font-family:Arial, Helvetica, sans-serif" class="ml-2">
+                                Adresse
+                            </label>
+                            <input type="text" id="addressSurveiller" name="addressSurveiller"
+                                class="border-2 focus:border-blue-500 border-gray-500 p-1 rounded-2xl shadow focus:outline-none pr-2 pl-2"
+                                autocomplete="off">
+                        </p>
+    
+                        <p class="flex flex-col w-24">
+                            <label for="portSurveiller" style="font-family:Arial, Helvetica, sans-serif" class="ml-2">
+                                Port
+                            </label>
+                            <input type="number" id="portSurveiller" name="portSurveiller"
+                                class="border-2 focus:border-blue-500 border-gray-500 p-1 rounded-2xl shadow focus:outline-none pr-2 pl-2"
+                                autocomplete="off">
+                        </p>
+    
+                    </section>
+    
+                    <!-- Féquence de vérification -->
+                    <section>
+                        <div class="flex flex-col mb-2">
+    
+                            <p style="font-family:Arial, Helvetica, sans-serif;" class="ml-2">
+                                Fréquence de vérification
+                            </p>
+    
+                            <div class="flex flex-row items-center">
+    
+                                <!-- minutes -->
+                                <p class="flex flex-row-reverse mr-3 items-center"
+                                    style="font-family:Arial, Helvetica, sans-serif;">
+                                    <label for="minSurveiller">min</label>
+                                    <input type="number" id="minSurveiller" name="minSurveiller"
+                                        class="border-2 focus:border-blue-500 border-gray-500 p-1 rounded-2xl shadow focus:outline-none pr-2 pl-2 w-32"
+                                        autocomplete="off">
+                                </p>
+    
+                                <!-- secondes -->
+                                <p class="flex flex-row-reverse items-center"
+                                    style="font-family:Arial, Helvetica, sans-serif;">
+                                    <label for="secSurveiller">sec</label>
+                                    <input type="number" id="secSurveiller" name="secSurveiller" value="30"
+                                        class="border-2 focus:border-blue-500 border-gray-500 p-1 rounded-2xl shadow focus:outline-none pr-2 pl-2 w-16"
+                                        autocomplete="off">
+                                </p>
+    
+                                <div class="flex-grow"></div>
+                            </div>
+    
+                        </div>
+                    </section>
+    
+                    <!-- Enregister ou annuler -->
+                    <aside class="flex flex items-center justify-end mt-4">
+                        <p>
+                            <input type="button" value="Annuler" class="mr-2 bg-white cursor-pointer" style="color:red;" onclick="show('configurationSurveillance')">
+                        </p>
+    
+                        <p class="flex items-center hover:bg-blue-600 bg-gray-600 rounded shadow p-1">
+                            <label for="save"><svg xmlns="http://www.w3.org/2000/svg"
+                                    xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false"
+                                    width="1em" height="1em"
+                                    style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);"
+                                    preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
+                                    <path fill="none" d="M9 14h6v5H9zm2-9h2v2h-2z" />
+                                    <path fill="none"
+                                        d="M7 14c0-1.103.897-2 2-2h6c1.103 0 2 .897 2 2v5h2.001L19 8.414L15.586 5H15v4H7V5H5v14h2v-5z" />
+                                    <path
+                                        d="M5 21h14c1.103 0 2-.897 2-2V8a.997.997 0 0 0-.293-.707l-4-4A.996.996 0 0 0 16 3H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2zm10-2H9v-5h6v5zM13 7h-2V5h2v2zM5 5h2v4h8V5h.586L19 8.414L19.001 19H17v-5c0-1.103-.897-2-2-2H9c-1.103 0-2 .897-2 2v5H5V5z"
+                                        fill="white" />
+                                </svg></label>
+                            <input type="button" value="Enregistrer" id="save"
+                                class="bg-transparent text-white p-1 cursor-pointer" onclick=" modifierSurveillance()">
+                        </p>
+                    </aside>
+                </div>
+            </div>
+    
+            <div class="flex-grow"></div>
+        </div>
+    
+        <div class="flex-grow"></div>
+        </div>
+    
+    </div>
+
+    <!-- Pop-ups - Configuration surveillance des serveurs -->
+    <div id="watch" class="absolute" hidden>
+        <div class="flex w-screen h-screen text-sm absolute">
+            <!-- Fond transparent -->
+            <div class="absolute w-screen h-screen bg-gray-300 opacity-50 " onclick="show('watch')"></div>
+            <!-- Centrer horizontalement -->
+            <div class="flex-grow"></div>
+        
+            <div class="flex flex-col">
+                <!-- Centrer verticalement -->
+                <div class="flex-grow"></div>
+        
+                <div class="flex flex-col items-center border-2 shadow-2xl rounded-2xl p-8 bg-white z-50">
+                    <h2 style="font-family: Georgia, 'Times New Roman', Times, serif; font-size: x-large;" class="mb-6">
+                        Serveurs sous surveillance</h2>
+                    <div class="flex flex-col h-full w-full">
+        
+                        <!-- Serveur surveiller -->
+                        <div id="afficheListeServeur">
+        
+                        </div>
+        
+                        <!-- quitter -->
+                        <aside class="flex mt-4 items-center">
+                            <p class="flex-grow"></p>
+                            <p class="flex bg-blue-600 rounded shadow p-1" onclick="show('watch')">
+                                <input type="button" value="quitter" id="quitter"
+                                    class="bg-transparent text-white p-1 cursor-pointer">
+                            </p>
+                        </aside>
+                    </div>
+                </div>
+        
+                <div class="flex-grow"></div>
+        </div>
+    
+        <div class="flex-grow"></div>
+    
+    </div>
+
+
+</body>
+
+</html>
