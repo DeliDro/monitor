@@ -495,12 +495,12 @@
                                 démarrage</label>
                         </section>
         
-                        <!-- Enregister ou annuler -->
+                        <!-- Enregister ou supprimer -->
                         <aside class="flex flex items-center justify-end mt-4">
                             <p>
-                                <input type="button" value="Annuler" 
+                                <input type="button" value="supprimer" 
                                 class="mr-2 bg-white cursor-pointer" style="color:red;"
-                                onclick="show('configurationServeurLocaux')">
+                                onclick="show('configurationServeurLocaux'),supprimerServeurLocal()">
                             </p>
         
                             <p class="flex items-center bg-blue-600 rounded shadow p-1"
@@ -625,10 +625,12 @@
                         </div>
                     </section>
     
-                    <!-- Enregister ou annuler -->
+                    <!-- Enregister ou supprimer -->
                     <aside class="flex flex items-center justify-end mt-4">
                         <p>
-                            <input type="button" value="Annuler" class="mr-2 bg-white cursor-pointer" style="color:red;" onclick="show('configurationSurveillance')">
+                            <input type="button" value="supprimer" 
+                            class="mr-2 bg-white cursor-pointer" style="color:red;" 
+                            onclick="show('configurationSurveillance'),supprimerSurveillance()">
                         </p>
     
                         <p class="flex items-center hover:bg-blue-600 bg-gray-600 rounded shadow p-1">

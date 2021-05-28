@@ -15,7 +15,7 @@ function afficheNomSurveillance() {
         document.getElementById('listeNomServeurSurveiller').appendChild(div);
     }
     if (listeSurveillance.length!=0){
-        afficheInfoSurveillance(b[0])
+        afficheInfoSurveillance(listeSurveillance[0])
     }
 }
 

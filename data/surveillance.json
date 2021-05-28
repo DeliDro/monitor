@@ -1,5 +1,6 @@
 [
   {
+    "id": "sv-01",
     "nomServeur": "DIP",
     "adresse": "/dip/client",
     "port": "9000",
@@ -7,6 +8,7 @@
     "sec": "30"
   },
   {
+    "id": "sv-02",
     "nomServeur": "dip2",
     "adresse": "/dip/client",
     "port": "8080",

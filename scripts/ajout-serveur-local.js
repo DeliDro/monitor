@@ -52,6 +52,17 @@ let modifierServeurLocal=()=>{
     console.log(listeServeur)
 }
 
+let supprimerServeurLocal = ()=>{
+    const serveur = listeServeur
+        .find(serveur => serveur.nomServeur === document.getElementById("listeNomServeurEnregistrer").value);
+        
+    listeServeur=listeServeur.filter(i=> i.id != serveur.id)
+    const fs = require('fs')
+    let son = JSON.stringify(listeServeur, null, 2)
+    fs.writeFileSync('data/serveurs-locaux.json', son)
+    console.log(listeServeur)
+}
+
 
 
 
