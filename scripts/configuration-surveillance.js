@@ -19,8 +19,9 @@ function afficheNomSurveillance() {
         div.innerHTML = serveur.nomServeur;
         document.getElementById('listeNomServeurSurveiller').appendChild(div);
     }
-
-    afficheInfoSurveillance(b[0])
+    if (b.length!=0){
+        afficheInfoSurveillance(b[0])
+    }
 }
 
 function afficheInfoSurveillance(objetServeur) {

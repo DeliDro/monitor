@@ -41,6 +41,8 @@ let modifierSurveillance = ()=>{
         sec : document.getElementById("secSurveiller").value
     }
     listeSurveillance.push(serveurInfos)
-
+    const fs = require('fs')
+    let son = JSON.stringify(listeSurveillance)
+    fs.writeFileSync('data/surveillance.json', son)
     console.log(listeSurveillance)
 }

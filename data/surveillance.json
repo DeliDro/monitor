@@ -1,22 +1,2 @@
-[
-    {
-        "adresse": "/dip/client",
-        "min": "1",
-        "sec": "30",
-        "nomServeur": "dip",
-        "port": "8080",
-        "id":"sv-1",
-        "lastCheck": 12,
-        "actif": false
-    },
-    {
-        "adresse": "/dip/client",
-        "min": "1",
-        "sec": "30",
-        "nomServeur": "dip2",
-        "port": "8080",
-        "id": "sv-1",
-        "lastCheck": 12,
-        "actif": false
-    }
-]
+[{"nomServeur":"dip","adresse":"/dip/client","port":"9000","min":"1","sec":"30"},
+{"nomServeur":"dip2","adresse":"/dip/client","port":"8080","min":"1","sec":"30"}]

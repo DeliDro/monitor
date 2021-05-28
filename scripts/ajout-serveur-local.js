@@ -48,7 +48,9 @@ let modifierServeurLocal=()=>{
         lancerAuDemarrage : document.getElementById("lancerAuDemarrageLocal").checked
     }
     listeServeur.push(serveurInfos)
-
+    const fs = require('fs')
+    let son = JSON.stringify(listeServeur)
+    fs.writeFileSync('data/serveurs-locaux.json', son)
     console.log(listeServeur)
 }
 

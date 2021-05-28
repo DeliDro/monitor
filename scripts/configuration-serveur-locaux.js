@@ -20,7 +20,9 @@ function afficheNomServeur() {
         document.getElementById('listeNomServeurEnregistrer').appendChild(div);
     }
 
-    afficheInfoServeur(b[0])
+    if (b.length!=0){
+        afficheInfoServeur(b[0])
+    }
 }
 
 function afficheInfoServeur(objetServeur) {
