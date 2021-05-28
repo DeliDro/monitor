@@ -12,7 +12,10 @@
     <script src="scripts/configuration-surveillance.js"></script>
     <script src="scripts/surveillance.js"></script>
     <script src="scripts/main.js"></script>
+    <script src="scripts/Sauvegarde.js"></script>
 
+    
+    <script src="index.js" defer></script>
     <link rel="stylesheet" href="node_modules/xterm/css/xterm.css">
     <script src="node_modules/xterm/lib/xterm.js"></script>
 </head>
@@ -39,8 +42,11 @@
             }, 1000);
         }
 
+        window.console.log(__dirname)
+
     timeLocalServer("temps")
     </script>
+
 
     <!-- barre de navigation -->
     <nav class="flex border-2 items-center bg-blue-700">
@@ -58,13 +64,13 @@
                 class="bg-blue-500 absolute mt-10 text-white cursor-pointer"
             >
                 <!-- Serveur local -->
-                <div onclick="show('ajoutServeurLocal')" class="p-1 pl-2 pr-2 hover:bg-blue-400">Serveur local</div>
+                <div onclick="show('ajoutServeurLocal'),recupererServeursLocaux()" class="p-1 pl-2 pr-2 hover:bg-blue-400">Serveur local</div>
 
                 <!-- Ligne séparatrice -->
                 <div class="border-b-2 border-white"></div>
 
                 <!-- Surveillance serveur -->
-                <div onclick="show('surveillanceServeurDistant')" class="p-1 pl-2 pr-2 hover:bg-blue-400">Surveillance serveur</div>
+                <div onclick="show('surveillanceServeurDistant'),recupererSurveillance()" class="p-1 pl-2 pr-2 hover:bg-blue-400">Surveillance serveur</div>
             </div>
         </div>
 
@@ -76,20 +82,20 @@
             <!-- Options -->
             <div name="config" id="config" hidden class="bg-blue-500 absolute mt-10 text-white cursor-pointer">
                 <!-- Serveur local -->
-                <div onclick="show('configurationServeurLocaux')" class="p-1 pl-2 pr-2 hover:bg-blue-400">Serveur local</div>
+                <div onclick="show('configurationServeurLocaux'),recupererServeursLocaux(),afficheNomServeur()" class="p-1 pl-2 pr-2 hover:bg-blue-400">Serveur local</div>
         
                 <!-- Ligne séparatrice -->
                 <div class="border-b-2 border-white"></div>
         
                 <!-- Surveillance serveur -->
-                <div onclick="show('configurationSurveillance')" class="p-1 pl-2 pr-2 hover:bg-blue-400">Surveillance serveur</div>
+                <div onclick="show('configurationSurveillance'),recupererSurveillance(),afficheNomSurveillance()" class="p-1 pl-2 pr-2 hover:bg-blue-400">Surveillance serveur</div>
             </div>
         </div>
 
         <!-- Menu Surveillance-->
         <div class="flex flex-col">
             <!-- Titre -->
-            <input type="button" value="Surveiller" onclick="show('watch');afficheListeServeur()"
+            <input type="button" value="Surveiller" onclick="recupererSurveillance(),show('watch');afficheListeServeur()"
                 class="bg-blue-700 text-white p-2 ease-in-out duration-100 hover:bg-blue-400 cursor-pointer">
         </div>
 
@@ -136,8 +142,6 @@
         </section>
     </aside>
 
-    <button id="bouton"></button>
-
     <!-- Terminal -->
     <aside class="flex-grow">
         <script>
@@ -150,6 +154,7 @@
                 }
                 document.getElementById(id).hidden = !document.getElementById(id).hidden
             }
+           
         </script>
         <div id="choix">
             <p>
@@ -158,12 +163,16 @@
             <p>
                 <input type="button" value="Afficher Python" onclick="show2('terminal2')">
             </p>
+            <p>
+                <input type="button" id="bouton" value="click">
+            </p>
+            
         </div>
         
         <div id="terminal" style="max-width: 100%"></div>
         <div id="terminal2" hidden style="max-width: 100%;"></div>
         
-        <script src="index.js"></script>
+        
     </aside>
     
     <!-- pied de page -->
@@ -429,29 +438,11 @@
                         Configuration des serveurs locaux</h2>
                     <div class="flex flex-col">
                         <!-- Menu Nom serveur-->
-                        <div class="flex flex-col mr-4">
-                            <!-- Titre -->
-                            <p class="flex flex-row bg-blue-700 text-white text-left p-2 ease-in-out duration-100 hover:bg-blue-400 cursor-pointer leading-3"
-                                onclick="show('listeNomServeurEnregister');afficheNomServeur()">
-                                <input type="button" value="Nom serveur" 
-                                    class="bg-transparent text-white leading-3">
-                            
-                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
-                                    focusable="false" width="1em" height="1em"
-                                    style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);"
-                                    preserveAspectRatio="xMidYMid meet" viewBox="0 0 20 20">
-                                    <path d="M15 8l-4.03 6L7 8h8z" fill="white" />
-                                </svg>
-                            </p>
-                            <!-- Options -->
-                            <div name="listeNomServeurEnregister" id="listeNomServeurEnregister" hidden
-                                class="bg-blue-500 absolute mt-8 text-white cursor-pointer">
-                                <!-- Serveur local amené par une fonction-->
-        
-        
-                            </div>
-                        </div>
-        
+                        <p class="bg-blue-700 text-white text-left p-2 ">
+                            <select onchange="updateConfigLocalView()"  name="listeNomServeurEnregistrer" id="listeNomServeurEnregistrer" class="bg-blue-700 text-white p-2 ease-in-out duration-100">
+                            </select>
+                        </p>
+                    </div>
                         <!-- Nom du serveur -->
                         <section>
                             <p class="flex flex-col mb-2">
@@ -558,26 +549,13 @@
                     Surveillance serveur distant</h2>
                 <div class="flex flex-col">
                     <!-- Menu Nom serveur-->
-                    <div class="flex flex-col mr-4">
-                        <!-- Titre -->
-                        <p class="flex flex-row bg-blue-700 text-white text-left p-2 ease-in-out duration-100 hover:bg-blue-400 cursor-pointer leading-3"
-                            onclick="show('listeNomServeurSurveiller');afficheNomSurveillance()">
-                            <input type="button" value="Nom serveur" class="bg-transparent text-white leading-3">
-    
-                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                                aria-hidden="true" focusable="false" width="1em" height="1em"
-                                style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);"
-                                preserveAspectRatio="xMidYMid meet" viewBox="0 0 20 20">
-                                <path d="M15 8l-4.03 6L7 8h8z" fill="white" />
-                            </svg>
+                    
+                        <p class="bg-blue-700 text-white text-left p-2 ">
+                            <select onchange="updateConfigSurveillerView()" name="listeNomServeurSurveiller" id="listeNomServeurSurveiller"
+                                class="bg-blue-700 text-white p-2 ease-in-out duration-100">
+                            </select>
                         </p>
-                        <!-- Options -->
-                        <div name="listeNomServeurSurveiller" id="listeNomServeurSurveiller" hidden
-                            class="bg-blue-500 absolute mt-8 text-white cursor-pointer">
-                            <!-- Serveur local amené par une fonction-->
-    
-                        </div>
-                    </div>
+                   
     
                     <!-- Nom du serveur -->
                     <section>

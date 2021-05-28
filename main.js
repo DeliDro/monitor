@@ -13,6 +13,7 @@ function createWindow() {
         width: 800,
         webPreferences: {
             nodeIntegration: true
+            
         }
     });
     mainWindow.loadURL(`file://${__dirname}/index-e-dip.html`);
@@ -40,7 +41,7 @@ function createWindow() {
     });
 
     // hytf
-    var ptyProcess2 = pty.spawn(shell, ["python C:\\Users\\criterion\\Desktop\\xterm\\test.py"], {
+    var ptyProcess2 = pty.spawn(shell, ["python"], {
         name: "xterm-color",
         cols: 80,
         rows: 24,

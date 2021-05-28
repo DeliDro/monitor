@@ -1,5 +1,11 @@
 let listeNSurveillanceAfficher = document.getElementsByClassName('nomSurveillance')
 
+function updateConfigSurveillerView() {
+    const serveur = listeSurveillance
+        .find(serveur => serveur.nomServeur === document.getElementById("listeNomServeurSurveiller").value);
+
+    afficheInfoSurveillance(serveur);
+}
 
 function afficheNomSurveillance() {
     let b = listeSurveillance
@@ -8,28 +14,26 @@ function afficheNomSurveillance() {
     }
     for (let serveur of b) {
         //ajout du nom du serveur
-        let div = document.createElement("div");
+        let div = document.createElement("option");
         div.setAttribute('class', 'nomSurveillance');
-        div.setAttribute('onclick', 'show("listeNomServeurSurveiller")');
         div.innerHTML = serveur.nomServeur;
-        div.addEventListener('click', function(){ afficheInfoSurveillance(serveur)}, false);
         document.getElementById('listeNomServeurSurveiller').appendChild(div);
-        //ajout de la bordure
-        let bord = document.createElement("div");
-        bord.setAttribute('class', 'ligneEspace');
-        document.getElementById('listeNomServeurSurveiller').appendChild(bord)
     }
 
+    afficheInfoSurveillance(b[0])
 }
 
 function afficheInfoSurveillance(objetServeur) {
-        document.getElementById("serveurSurveiller").value = objetServeur.nomServeur
-        document.getElementById("addressSurveiller").value = objetServeur.adresse
-        document.getElementById("portSurveiller").value = objetServeur.port
-        document.getElementById("minSurveiller").value = objetServeur.min
-        document.getElementById("secSurveiller").value = objetServeur.sec
-    }
+    const update = (id, value, attr) => document.getElementById(id)[attr] = value;
 
+    const surveillance =[
+        ["serveurSurveiller", objetServeur.nomServeur, "value"],
+        ["addressSurveiller", objetServeur.adresse, "value"],
+        ["portSurveiller", objetServeur.port, "value"],
+        ["minSurveiller", objetServeur.min, "value"],
+        ["secSurveiller", objetServeur.sec, "value"]
 
+    ]
 
-
+    surveillance.map(surveillance => update(...surveillance));
+}

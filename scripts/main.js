@@ -1,5 +1,5 @@
 const show = (toShow) => {
-    const showables = ["ajoutServeurLocal", "add", "config","listeNomServeurEnregister","listeNomServeurSurveiller"].filter(i => i !== toShow );
+    const showables = ["ajoutServeurLocal", "add", "config"].filter(i => i !== toShow );
 
     for (const showable of showables) {
         document.getElementById(showable).hidden = true;

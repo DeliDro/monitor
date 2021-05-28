@@ -1,14 +1,5 @@
 //modifier pour faire pour suveillance
-let listeSurveillance=[{
-    adresse: "/dip/client",
-    min: "1",
-    sec: "30",
-    nomServeur: "dip",
-    port: "8080",
-    id:0000,
-    lastCheck:12,
-    actif:false
-}]
+let listeSurveillance=[]
 
 let enregistrerSurveillance = () => {
     if(listeSurveillance.length===0){

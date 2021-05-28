@@ -2,8 +2,6 @@ const ipc = require("electron").ipcRenderer
 var term = new Terminal();
 var term2 = new Terminal();
 
-
-
 term.open(document.getElementById("terminal"));
 
 term2.open(document.getElementById("terminal2"));
