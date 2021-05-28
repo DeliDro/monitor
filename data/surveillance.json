@@ -5,7 +5,9 @@
     "adresse": "/dip/client",
     "port": "9000",
     "min": "45",
-    "sec": "30"
+    "sec": "30",
+    "action": "jnzk ",
+    "lastcheck": 500
   },
   {
     "id": "sv-02",
@@ -13,6 +15,8 @@
     "adresse": "/dip/client",
     "port": "8080",
     "min": "1",
-    "sec": "30"
+    "sec": "30",
+    "action": "fsnvjf",
+    "lastcheck": 500
   }
 ]

@@ -8,7 +8,8 @@ let enregistrerSurveillance = () => {
         adresse: document.getElementById("address1").value,
         port : document.getElementById("port1").value,
         min : document.getElementById("min").value,
-        sec : document.getElementById("sec").value
+        sec : document.getElementById("sec").value,
+        action : document.getElementById("action").value
     }
     listeSurveillance.push(serveurInfos)
     }else{
@@ -20,7 +21,8 @@ let enregistrerSurveillance = () => {
             adresse: document.getElementById("address1").value,
             port : document.getElementById("port1").value,
             min : document.getElementById("min").value,
-            sec : document.getElementById("sec").value
+            sec : document.getElementById("sec").value,
+            action: document.getElementById("action").value
             }
             listeSurveillance.push(serveurInfos)
         }
@@ -40,6 +42,7 @@ let modifierSurveillance = ()=>{
         serveur.port = document.getElementById("portSurveiller").value,
         serveur.min = document.getElementById("minSurveiller").value,
         serveur.sec = document.getElementById("secSurveiller").value
+        serveur.action = document.getElementById("actionSurveiller").value
 
     
     const fs = require('fs')

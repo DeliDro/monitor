@@ -32,7 +32,9 @@ let enregistrerServeurLocal = () => {
             listeServeur.push(serveurInfos)
         }
     }
-    
+    const fs = require('fs')
+    let son = JSON.stringify(listeServeur, null, 2)
+    fs.writeFileSync('data/serveurs-locaux.json', son)
     console.log(listeServeur);
 }
 

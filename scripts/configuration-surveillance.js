@@ -27,7 +27,8 @@ function afficheInfoSurveillance(objetServeur) {
         ["addressSurveiller", objetServeur.adresse, "value"],
         ["portSurveiller", objetServeur.port, "value"],
         ["minSurveiller", objetServeur.min, "value"],
-        ["secSurveiller", objetServeur.sec, "value"]
+        ["secSurveiller", objetServeur.sec, "value"],
+        ["actionSurveiller", objetServeur.action, "value"]
 
     ]
 
