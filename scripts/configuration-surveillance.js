@@ -1,5 +1,3 @@
-let listeNSurveillanceAfficher = document.getElementsByClassName('nomSurveillance')
-
 function updateConfigSurveillerView() {
     const serveur = listeSurveillance
         .find(serveur => serveur.nomServeur === document.getElementById("listeNomServeurSurveiller").value);
@@ -8,18 +6,15 @@ function updateConfigSurveillerView() {
 }
 
 function afficheNomSurveillance() {
-    let b = listeSurveillance
-    for (let texte of listeNSurveillanceAfficher) {
-        b = b.filter(i=> i.nomServeur != texte.innerHTML);
-    }
-    for (let serveur of b) {
+    document.getElementById('listeNomServeurSurveiller').innerHTML=""
+    for (let serveur of listeSurveillance) {
         //ajout du nom du serveur
         let div = document.createElement("option");
         div.setAttribute('class', 'nomSurveillance');
         div.innerHTML = serveur.nomServeur;
         document.getElementById('listeNomServeurSurveiller').appendChild(div);
     }
-    if (b.length!=0){
+    if (listeSurveillance.length!=0){
         afficheInfoSurveillance(b[0])
     }
 }

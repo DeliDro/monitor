@@ -37,23 +37,20 @@ let enregistrerServeurLocal = () => {
 }
 
 let modifierServeurLocal=()=>{
-    let b=listeServeur
-    b=b.filter(i=>i.nomServeur==document.getElementById("serveurLocal").value)
-    removeItemOnce(listeServeur, b[0])
-    let serveurInfos = {
-        nomServeur: document.getElementById("serveurLocal").value,
-        adresse: document.getElementById("addressLocal").value,
-        port : document.getElementById("portLocal").value,
-        fichier : document.getElementById("fichierLocal").value,
-        lancerAuDemarrage : document.getElementById("lancerAuDemarrageLocal").checked
-    }
-    listeServeur.push(serveurInfos)
+    const serveur = listeServeur
+        .find(serveur => serveur.nomServeur === document.getElementById("listeNomServeurEnregistrer").value);
+    
+    serveur.nomServeur= document.getElementById("serveurLocal").value;
+    serveur.adresse= document.getElementById("addressLocal").value;
+    serveur.port = document.getElementById("portLocal").value;
+    serveur.fichier = document.getElementById("fichierLocal").value;
+    serveur.lancerAuDemarrage = document.getElementById("lancerAuDemarrageLocal").checked
+    
     const fs = require('fs')
-    let son = JSON.stringify(listeServeur)
+    let son = JSON.stringify(listeServeur, null, 2)
     fs.writeFileSync('data/serveurs-locaux.json', son)
     console.log(listeServeur)
 }
-
 
 
 

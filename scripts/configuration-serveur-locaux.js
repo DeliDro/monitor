@@ -1,5 +1,3 @@
-
-let listeNSAfficher=document.getElementsByClassName('nomServeur')
 function updateConfigLocalView() {
     const serveur = listeServeur
         .find( serveur => serveur.nomServeur === document.getElementById("listeNomServeurEnregistrer").value);
@@ -8,11 +6,8 @@ function updateConfigLocalView() {
 }
 
 function afficheNomServeur() {
-    let b = listeServeur
-    for (let texte of listeNSAfficher) {
-        b = b.filter(i => i.nomServeur != texte.innerHTML);
-    }
-    for (let serveur of b) {
+    document.getElementById('listeNomServeurEnregistrer').innerHTML=""
+    for (let serveur of listeServeur) {
         //ajout du nom du serveur
         let div = document.createElement("option");
         div.setAttribute('class', 'nomServeur');
@@ -20,8 +15,8 @@ function afficheNomServeur() {
         document.getElementById('listeNomServeurEnregistrer').appendChild(div);
     }
 
-    if (b.length!=0){
-        afficheInfoServeur(b[0])
+    if (listeServeur.length!=0){
+        afficheInfoServeur(listeServeur[0])
     }
 }
 

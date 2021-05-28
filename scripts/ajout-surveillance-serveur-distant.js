@@ -30,19 +30,19 @@ let enregistrerSurveillance = () => {
 }
 
 let modifierSurveillance = ()=>{
-    let b=listeSurveillance
-    b=b.filter(i=>i.nomServeur==document.getElementById("serveurSurveiller").value)
-    removeItemOnce(listeSurveillance, b[0])
-    let serveurInfos = {
-        nomServeur: document.getElementById("serveurSurveiller").value,
-        adresse: document.getElementById("addressSurveiller").value,
-        port : document.getElementById("portSurveiller").value,
-        min : document.getElementById("minSurveiller").value,
-        sec : document.getElementById("secSurveiller").value
-    }
-    listeSurveillance.push(serveurInfos)
+    const serveur = listeSurveillance
+        .find(serveur => serveur.nomServeur === document.getElementById("listeNomServeurSurveiller").value);
+
+        serveur.nomServeur= document.getElementById("serveurSurveiller").value,
+        serveur.adresse= document.getElementById("addressSurveiller").value,
+        serveur.port = document.getElementById("portSurveiller").value,
+        serveur.min = document.getElementById("minSurveiller").value,
+        serveur.sec = document.getElementById("secSurveiller").value
+
+    
     const fs = require('fs')
-    let son = JSON.stringify(listeSurveillance)
+    let son = JSON.stringify(listeSurveillance, null, 2)
     fs.writeFileSync('data/surveillance.json', son)
     console.log(listeSurveillance)
+    
 }

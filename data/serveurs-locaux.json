@@ -1,1 +1,26 @@
-[{"nomServeur":"Elasticsearch","adresse":"localhost","port":"800","fichier":"C:\\Users\\criterion\\Desktop\\serveurs\\elasticsearch.bat","lancerAuDemarrage":true},{"nomServeur":"patati patata","adresse":"localhost","port":"456","fichier":"febysubfrkle","lancerAuDemarrage":true}]
+[
+  {
+    "id": "sl-01",
+    "nomServeur": "patati patata",
+    "adresse": "localhost",
+    "port": "456",
+    "fichier": "febysubfrkle",
+    "lancerAuDemarrage": true
+  },
+  {
+    "id": "sl-02",
+    "nomServeur": "gfddffgfg",
+    "adresse": "localhost",
+    "port": "456",
+    "fichier": "febysubfrkle",
+    "lancerAuDemarrage": true
+  },
+  {
+    "id": "sl-03",
+    "nomServeur": "Elasticsearch",
+    "adresse": "localhost",
+    "port": "8800",
+    "fichier": "C:\\Users\\criterion\\Desktop\\serveurs\\elasticsearch.bat",
+    "lancerAuDemarrage": false
+  }
+]

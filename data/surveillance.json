@@ -1,2 +1,16 @@
-[{"nomServeur":"dip","adresse":"/dip/client","port":"9000","min":"1","sec":"30"},
-{"nomServeur":"dip2","adresse":"/dip/client","port":"8080","min":"1","sec":"30"}]
+[
+  {
+    "nomServeur": "DIP",
+    "adresse": "/dip/client",
+    "port": "9000",
+    "min": "45",
+    "sec": "30"
+  },
+  {
+    "nomServeur": "dip2",
+    "adresse": "/dip/client",
+    "port": "8080",
+    "min": "1",
+    "sec": "30"
+  }
+]
