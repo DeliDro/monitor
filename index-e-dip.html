@@ -2,51 +2,24 @@
 <html lang="en">
 
 <head>
+    <title>e-Dip Monitor</title>
+    
     <meta charset="UTF-8">
+    
     <link rel="stylesheet" href="styles/tailwind.min.css">
     <link rel="stylesheet" href="styles/configuation.css">
-    <title>interface principale</title>
-    <script src="scripts/ajout-serveur-local.js"></script>
-    <script src="scripts/ajout-surveillance-serveur-distant.js"></script>
-    <script src="scripts/configuration-serveur-locaux.js"></script>
-    <script src="scripts/configuration-surveillance.js"></script>
-    <script src="scripts/surveillance.js"></script>
-    <script src="scripts/main.js"></script>
-    <script src="scripts/Sauvegarde.js"></script>
-
-    
-    <script src="index.js" defer></script>
     <link rel="stylesheet" href="node_modules/xterm/css/xterm.css">
+    
     <script src="node_modules/xterm/lib/xterm.js"></script>
+    
+    <script src="scripts/global-handler.js"></script>
+    <script src="scripts/terminal-handler.js"></script>
+    <script src="scripts/surveillance-handler.js"></script>     
+    <script src="scripts/serveur-local-handler.js"></script>
 </head>
 
 <body class="flex flex-col h-screen">
-    <script>
-        function timeLocalServer(elementID) {
-            let temps = { h:0, m:0, s:0};
-
-            const f = (t) => t < 10 ? "0" + t : t
-
-            setInterval(() => {
-                temps.s += 1;
-                if (temps.s === 60) {
-                    temps.s = 0;
-                    temps.m += 1;
-                    if (temps.m == 60) {
-                        temps.m = 0;
-                        temps.h += 1
-                    }
-                }
-
-                document.getElementById(elementID).innerHTML = `${f(temps.h)}:${f(temps.m)}:${f(temps.s)}`;
-            }, 1000);
-        }
-
-        window.console.log(__dirname)
-
-    timeLocalServer("temps")
-    </script>
-
+    
 
     <!-- barre de navigation -->
     <nav class="flex border-2 items-center bg-blue-700">
@@ -64,13 +37,13 @@
                 class="bg-blue-500 absolute mt-10 text-white cursor-pointer"
             >
                 <!-- Serveur local -->
-                <div onclick="show('ajoutServeurLocal'),recupererServeursLocaux()" class="p-1 pl-2 pr-2 hover:bg-blue-400">Serveur local</div>
+                <div onclick="show('ajoutServeurLocal'),getServeursLocaux()" class="p-1 pl-2 pr-2 hover:bg-blue-400">Serveur local</div>
 
                 <!-- Ligne séparatrice -->
                 <div class="border-b-2 border-white"></div>
 
                 <!-- Surveillance serveur -->
-                <div onclick="show('surveillanceServeurDistant'),recupererSurveillance()" class="p-1 pl-2 pr-2 hover:bg-blue-400">Surveillance serveur</div>
+                <div onclick="show('surveillanceServeurDistant'),getSurveillances()" class="p-1 pl-2 pr-2 hover:bg-blue-400">Surveillance serveur</div>
             </div>
         </div>
 
@@ -82,20 +55,20 @@
             <!-- Options -->
             <div name="config" id="config" hidden class="bg-blue-500 absolute mt-10 text-white cursor-pointer">
                 <!-- Serveur local -->
-                <div onclick="show('configurationServeurLocaux'),recupererServeursLocaux(),afficheNomServeur()" class="p-1 pl-2 pr-2 hover:bg-blue-400">Serveur local</div>
+                <div onclick="show('configurationServeurLocaux'),getServeursLocaux(),afficheNomServeur()" class="p-1 pl-2 pr-2 hover:bg-blue-400">Serveur local</div>
         
                 <!-- Ligne séparatrice -->
                 <div class="border-b-2 border-white"></div>
         
                 <!-- Surveillance serveur -->
-                <div onclick="show('configurationSurveillance'),recupererSurveillance(),afficheNomSurveillance()" class="p-1 pl-2 pr-2 hover:bg-blue-400">Surveillance serveur</div>
+                <div onclick="show('configurationSurveillance'),getSurveillances(),afficheNomSurveillance()" class="p-1 pl-2 pr-2 hover:bg-blue-400">Surveillance serveur</div>
             </div>
         </div>
 
         <!-- Menu Surveillance-->
         <div class="flex flex-col">
             <!-- Titre -->
-            <input type="button" value="Surveiller" onclick="recupererSurveillance(),show('watch');afficheListeServeur()"
+            <input type="button" value="Surveiller" onclick="getSurveillances(),show('watch');afficheListeServeur()"
                 class="bg-blue-700 text-white p-2 ease-in-out duration-100 hover:bg-blue-400 cursor-pointer">
         </div>
 
@@ -133,46 +106,21 @@
 
         <!--En tête du terminal-->
         <section class="flex items-start">
+            <div class="flex items-start" id="nom">
+            </div>
             <p>
-                <input type="button" value="Nom du serveur" class="bg-gray-500 rounded-t-xl text-lg">
-            </p>
-            <p>
-                <input type="button" value="+" class="bg-gray-500 rounded-t-xl text-lg">
+                <input type="button" value="+" class="bg-gray-500 text-lg pl-2 pr-2 border-l-2 border-white">
             </p>
         </section>
     </aside>
 
     <!-- Terminal -->
-    <aside class="flex-grow">
+    <aside class="flex-grow" id="terminal">
         <script>
-            let show2 = (id) => {
-                let b = ["terminal", "terminal2"]
-                b = b.filter(i => i !== id)
-
-                for (a of b) {
-                    document.getElementById(a).hidden = true
-                }
-                document.getElementById(id).hidden = !document.getElementById(id).hidden
-            }
-           
+            getSurveillances()
+            getServeursLocaux()
+            lancerServeur()
         </script>
-        <div id="choix">
-            <p>
-                <input type="button" value="Afficher Powershell" onclick="show2('terminal')">
-            </p>
-            <p>
-                <input type="button" value="Afficher Python" onclick="show2('terminal2')">
-            </p>
-            <p>
-                <input type="button" id="bouton" value="click">
-            </p>
-            
-        </div>
-        
-        <div id="terminal" style="max-width: 100%"></div>
-        <div id="terminal2" hidden style="max-width: 100%;"></div>
-        
-        
     </aside>
     
     <!-- pied de page -->
@@ -187,9 +135,6 @@
             <label id="temps"></label>
         </p>
     </aside>
-
-    
-    
     
     <!-- Pop ups - Ajout serveur local -->
     <div id="ajoutServeurLocal" class="absolute" hidden>
@@ -212,10 +157,10 @@
                         <!-- Nom du serveur -->
                         <section>
                             <p class="flex flex-col mb-2">
-                                <label for="serveur" style="font-family:Arial, Helvetica, sans-serif" class="ml-2">
+                                <label for="nom-serveur-local" style="font-family:Arial, Helvetica, sans-serif" class="ml-2">
                                     Nom du serveur
                                 </label>
-                                <input type="text" id="serveur" name="serveur"
+                                <input type="text" id="nom-serveur-local" name="serveur"
                                     class="border-2 focus:border-blue-500 border-gray-500 p-1 rounded-2xl shadow focus:outline-none pr-2 pl-2"
                                     autocomplete="off">
                             </p>
@@ -224,19 +169,19 @@
                         <!-- Adresse et port -->
                         <section class="flex items center mb-2">
                             <p class="flex flex-col mr-4 flex-grow">
-                                <label for="address" style="font-family:Arial, Helvetica, sans-serif" class="ml-2">
+                                <label for="address-serveur-local" style="font-family:Arial, Helvetica, sans-serif" class="ml-2">
                                     Adresse
                                 </label>
-                                <input type="text" id="address" name="address"
+                                <input type="text" id="address-serveur-local" name="address"
                                     class="border-2 focus:border-blue-500 border-gray-500 p-1 rounded-2xl shadow focus:outline-none pr-2 pl-2"
                                     autocomplete="off">
                             </p>
         
                             <p class="flex flex-col w-24">
-                                <label for="port" style="font-family:Arial, Helvetica, sans-serif" class="ml-2">
+                                <label for="port-serveur-local" style="font-family:Arial, Helvetica, sans-serif" class="ml-2">
                                     Port
                                 </label>
-                                <input type="number" id="port" name="port"
+                                <input type="number" id="port-serveur-local" name="port"
                                     class="border-2 focus:border-blue-500 border-gray-500 p-1 rounded-2xl shadow focus:outline-none pr-2 pl-2"
                                     autocomplete="off">
                             </p>
@@ -246,10 +191,10 @@
                         <!-- Fichier -->
                         <section class="mb-2">
                             <p class="flex flex-col">
-                                <label for="fichier" style="font-family:Arial, Helvetica, sans-serif;" class="ml-2">
+                                <label for="fichier-serveur-local" style="font-family:Arial, Helvetica, sans-serif;" class="ml-2">
                                     Fichier
                                 </label>
-                                <input type="text" id="fichier" name="fichier"
+                                <input type="text" id="fichier-serveur-local" name="fichier"
                                     class="border-2 focus:border-blue-500 border-gray-500 p-1 rounded-2xl shadow focus:outline-none pr-2 pl-2"
                                     autocomplete="off">
                             </p>
@@ -257,7 +202,7 @@
         
                         <!-- Oui or Non -->
                         <section class="flex items-center">
-                            <input type="checkbox" id="lancerAuDemarrage" class="mr-1"><label for="lancerAuDemarrage">Lancer au
+                            <input type="checkbox" id="lancerAuDemarrage-serveur-local" class="mr-1"><label for="lancerAuDemarrage">Lancer au
                                 démarrage</label>
                         </section>
         

@@ -1,18 +1,26 @@
 [
   {
     "adresse": "localhost",
-    "fichier": "febysubfrkle",
+    "fichier": "C:\\Users\\criterion\\Desktop\\xterm\\test.bat",
     "id": "sl-02",
     "lancerAuDemarrage": true,
-    "nomServeur": "gfddffgfg",
+    "nomServeur": "reality",
     "port": "456"
   },
   {
     "adresse": "localhost",
-    "fichier": "C:\\Users\\criterion\\Desktop\\serveurs\\elasticsearch.bat",
+    "fichier": "C:\\Users\\criterion\\Desktop\\xterm\\test2.bat",
     "id": "sl-03",
     "lancerAuDemarrage": false,
     "nomServeur": "Elasticsearch",
     "port": "8800"
+  },
+  {
+    "id":"sl-01", 
+    "nomServeur": "virtual",
+    "adresse": "nzzeizn",
+    "port": "578",
+    "fichier": "eauozinfz",
+    "lancerAuDemarrage": true
   }
 ]
