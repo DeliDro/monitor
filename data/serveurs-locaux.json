@@ -16,11 +16,35 @@
     "port": "8800"
   },
   {
-    "id":"sl-01", 
+    "id": "sl-01",
     "nomServeur": "virtual",
     "adresse": "nzzeizn",
     "port": "578",
     "fichier": "eauozinfz",
+    "lancerAuDemarrage": true
+  },
+  {
+    "id": "sl-04",
+    "nomServeur": "tatatata",
+    "adresse": "heigth",
+    "port": "5040",
+    "fichier": "boom",
+    "lancerAuDemarrage": true
+  },
+  {
+    "id": "sl-05",
+    "nomServeur": "bamabam",
+    "adresse": "assinie",
+    "port": "500",
+    "fichier": "plage",
+    "lancerAuDemarrage": true
+  },
+  {
+    "id": "sl-06",
+    "nomServeur": "shbsenuz",
+    "adresse": "assinie",
+    "port": "500",
+    "fichier": "plage",
     "lancerAuDemarrage": true
   }
 ]

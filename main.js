@@ -7,8 +7,8 @@ app.allowRendererProcessReuse = false;
 let mainWindow;
 function createWindow() {
     mainWindow = new BrowserWindow({
-        height: 600,
-        width: 800,
+        height: 720,
+        width: 1280,
         webPreferences: {
             nodeIntegration: true
 
@@ -20,7 +20,6 @@ function createWindow() {
     });
 
 }
-
 
 app.on("ready", createWindow);
 

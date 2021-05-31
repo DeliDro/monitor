@@ -70,6 +70,7 @@ let listeServeurs = []
 let enregistrerServeurLocal = () => {
     if (listeServeurs.length === 0) {
         let serveurInfos = {
+            id: "sl"+listeServeurs.length,
             nomServeur: document.getElementById("nom-serveur-local").value,
             adresse: document.getElementById("address-serveur-local").value,
             port: document.getElementById("port-serveur-local").value,
@@ -79,22 +80,22 @@ let enregistrerServeurLocal = () => {
         listeServeurs.push(serveurInfos)
     } else {
         let b = listeServeurs
-        b = b.filter(i => i.nomServeur == document.getElementById("serveur").value)
+        b = b.filter(i => i.nomServeur == document.getElementById("nom-serveur-local").value)
         if (b.length === 0) {
             let serveurInfos = {
-                nomServeur: document.getElementById("serveur").value,
-                adresse: document.getElementById("address").value,
-                port: document.getElementById("port").value,
-                fichier: document.getElementById("fichier").value,
-                lancerAuDemarrage: document.getElementById("lancerAuDemarrage").checked
+                id: "sl-0" + (listeServeurs.length+1),
+                nomServeur: document.getElementById("nom-serveur-local").value,
+                adresse: document.getElementById("address-serveur-local").value,
+                port: document.getElementById("port-serveur-local").value,
+                fichier: document.getElementById("fichier-serveur-local").value,
+                lancerAuDemarrage: document.getElementById("lancerAuDemarrage-serveur-local").checked
             }
             listeServeurs.push(serveurInfos)
         }
     }
     const fs = require('fs')
     let son = JSON.stringify(listeServeurs, null, 2)
-    fs.writeFileSync('data/serveurs-locaux.json', son)
-    console.log(listeServeurs);
+    fs.writeFileSync('data/serveurs-locaux.json', son);
 
     lancerServeur()
 }
@@ -113,7 +114,7 @@ let modifierServeurLocal = () => {
     const fs = require('fs')
     let son = JSON.stringify(listeServeurs, null, 2)
     fs.writeFileSync('data/serveurs-locaux.json', son)
-    console.log(listeServeurs)
+    
 }
 
 let supprimerServeurLocal = () => {
@@ -124,32 +125,28 @@ let supprimerServeurLocal = () => {
     const fs = require('fs')
     let son = JSON.stringify(listeServeurs, null, 2)
     fs.writeFileSync('data/serveurs-locaux.json', son)
-    console.log(listeServeurs)
+    
 }
 
 
 
 
 let lancerServeur = () => {
-    let listeServeurLance = listeServeurs.filter(i => i.lancerAuDemarrage === true);
+    let listeServeurLance = listeServeurs
+        .filter(i => i.lancerAuDemarrage === true)//Liste des serveurs à lancer
+        .filter(a => document.getElementById(a.id) === null);//Liste des serveurs pas encore lancés
 
     if (listeServeurLance.length !== 0) {
-        document.getElementById('terminal').innerHTML = "";
-
-        let output = []
 
         for (serveurLance of listeServeurLance) {
-            let p = `
-                <input
-                    id="${serveurLance.id}-button"
-                    type="button" value="${serveurLance.nomServeur}" 
-                    class="bg-blue-600 rounded-t-xl text-sm border-r-2 border-white
-                    p-1 pl-2 pr-2 text-white font-bold hover:bg-blue-400 ease-in-out duration-100
-                    cursor-pointer capitalize focus:outline-none" 
-                    onclick="selectTerminal('${serveurLance.id}')"
-                >`;
 
-            output.push(p);
+            let p = document.createElement('input')
+            p.setAttribute('id', `${serveurLance.id}-button`)
+            p.setAttribute('type','button')
+            p.setAttribute('value',serveurLance.nomServeur)
+            p.setAttribute('onclick', `selectTerminal('${serveurLance.id}')`)
+            document.getElementById('nom').appendChild(p)
+            
 
             let div = document.createElement('div')
             div.setAttribute('id', `${serveurLance.id}`)
@@ -158,6 +155,5 @@ let lancerServeur = () => {
             createTerminal(serveurLance)
         }
         selectTerminal(listeServeurLance[listeServeurLance.length - 1].id)
-        document.getElementById('nom').innerHTML = output.join("")
     }
 }

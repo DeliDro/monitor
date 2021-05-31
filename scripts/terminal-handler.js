@@ -19,9 +19,10 @@ function createTerminal(serveurLocal) {
         name: "xterm-color",
         cwd: process.env.HOME, // Répertoire de départ
         env: process.env,
+        cols: 150,
     });
 
-    const terminal = new Terminal();
+    const terminal = new Terminal({cols: 100});
     terminal.open(document.getElementById(serveurLocal.id));
 
     ptyProcess.onData((data) => terminal.write(data));
@@ -51,10 +52,13 @@ let selectTerminal = (idTerminal) => {
         .filter(i => i !== idTerminal) // Exlusion de l'ID du terminal à afficher
         .forEach(id => { // Masquage des autres terminaux
             document.getElementById(id).hidden = true;
+            document.getElementById(id + '-button').className = 'bg-gray-400 rounded-t-xl text-sm border-r-2 border-white p-1 pl-2 pr-2 hover:bg-blue-400 ease-in-out duration-100 cursor-pointer capitalize focus:outline-none';
         });
 
     // Affichage du terminal sélectionné
     document.getElementById(idTerminal).hidden = false;
+document.getElementById(idTerminal + '-button').className = 'bg-blue-600 rounded-t-xl text-sm border-r-2 border-white p-1 pl-2 pr-2 text-white font-bold hover:bg-blue-400 ease-in-out duration-100 cursor-pointer capitalize focus:outline-none';
+
 }
 
 // Temps de lancement d'un serveur
