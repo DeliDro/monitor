@@ -1,3 +1,5 @@
+const { Terminal } = require('xterm');
+
 // SERVEURS LOCAUX
 function getServeursLocaux() {
     listeServeurs = getJSONData("serveurs-locaux");
@@ -130,11 +132,13 @@ let supprimerServeurLocal = () => {
 
 
 
+let terminalData = [];
 
 let lancerServeur = () => {
     let listeServeurLance = listeServeurs
         .filter(i => i.lancerAuDemarrage === true)//Liste des serveurs à lancer
         .filter(a => document.getElementById(a.id) === null);//Liste des serveurs pas encore lancés
+    
 
     if (listeServeurLance.length !== 0) {
 
@@ -152,8 +156,13 @@ let lancerServeur = () => {
             div.setAttribute('id', `${serveurLance.id}`)
             div.setAttribute('hidden', 'true')
             document.getElementById('terminal').appendChild(div)
-            createTerminal(serveurLance)
+            
+            terminalData.push(createTerminal(serveurLance));
         }
         selectTerminal(listeServeurLance[listeServeurLance.length - 1].id)
     }
+}
+
+function  arreter(id) {
+    terminal.clearSelection(document.getElementById(id))
 }

@@ -20,7 +20,7 @@
     "nomServeur": "virtual",
     "adresse": "nzzeizn",
     "port": "578",
-    "fichier": "eauozinfz",
+    "fichier": "C:\\Users\\criterion\\Desktop\\attaque.bat",
     "lancerAuDemarrage": true
   },
   {
@@ -28,7 +28,7 @@
     "nomServeur": "tatatata",
     "adresse": "heigth",
     "port": "5040",
-    "fichier": "boom",
+    "fichier": "C:\\Users\\criterion\\Desktop\\Documents\\cours.bat",
     "lancerAuDemarrage": true
   },
   {
@@ -45,6 +45,22 @@
     "adresse": "assinie",
     "port": "500",
     "fichier": "plage",
+    "lancerAuDemarrage": true
+  },
+  {
+    "id": "sl-07",
+    "nomServeur": "dijns",
+    "adresse": "kuqebnc",
+    "port": "52145",
+    "fichier": " idkvljks",
+    "lancerAuDemarrage": false
+  },
+  {
+    "id": "sl-08",
+    "nomServeur": "dnvfjjfkhc",
+    "adresse": "kuqebnc",
+    "port": "52145",
+    "fichier": " idkvljks",
     "lancerAuDemarrage": true
   }
 ]
