@@ -130,8 +130,7 @@ let supprimerServeurLocal = () => {
     
 }
 
-
-
+//Liste des terminaux
 let terminalData = [];
 
 let lancerServeur = () => {
@@ -144,6 +143,7 @@ let lancerServeur = () => {
 
         for (serveurLance of listeServeurLance) {
 
+            //Ajout d'une en-tête
             let p = document.createElement('input')
             p.setAttribute('id', `${serveurLance.id}-button`)
             p.setAttribute('type','button')
@@ -151,18 +151,23 @@ let lancerServeur = () => {
             p.setAttribute('onclick', `selectTerminal('${serveurLance.id}')`)
             document.getElementById('nom').appendChild(p)
             
-
+            //Ajout d'un terminal
             let div = document.createElement('div')
             div.setAttribute('id', `${serveurLance.id}`)
             div.setAttribute('hidden', 'true')
             document.getElementById('terminal').appendChild(div)
             
+            
+
+            //Ajout d'un temps depuis le lancement
+            let ptemps = document.createElement('p')
+            ptemps.setAttribute('hidden', 'true')
+            ptemps.setAttribute('id',`${serveurLance.id}-temps`)
+            document.getElementById('piedDePage').appendChild(ptemps)
+
             terminalData.push(createTerminal(serveurLance));
+
         }
         selectTerminal(listeServeurLance[listeServeurLance.length - 1].id)
     }
-}
-
-function  arreter(id) {
-    terminal.clearSelection(document.getElementById(id))
 }

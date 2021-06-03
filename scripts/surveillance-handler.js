@@ -43,6 +43,7 @@ function afficheListeServeur() {
     let l = []
     let barre = "<div class='border-gray-500 border'></div>"
     for (serveur of listeSurveillances) {
+        ping(serveur)
         let a = `<div class="flex mb-2 mt-2">
                     <div id=listeVue class="flex flex-col">
                         <div>${serveur.nomServeur}</div>
@@ -65,6 +66,29 @@ function afficheListeServeur() {
         l.push(a)
     }
     document.getElementById("afficheListeServeur").innerHTML = l.join(barre)
+}
+
+
+function ping(surveillance) {
+    const tcpp = require('tcp-ping');
+    tcpp.ping({address: surveillance.adresse, port: surveillance.port, attempts: 1}, (err, data) => {
+        if (err) {
+            surveillance.actif = false;
+            console.log(err);
+        }
+
+        else {
+            if (data.avg) {
+                surveillance.actif = true
+                console.log("TOut est cool");
+            }
+            else {
+                // Gestion de l'erreur
+                surveillance.actif = false
+                console.log("erreur :", data.results[0]);
+            }
+        }
+    })
 }
 
 
@@ -107,7 +131,7 @@ function afficheInfoSurveillance(objetServeur) {
 }
 
 // AJOUT SURVEILLANCE
-//modifier pour faire pour suveillance
+//modifier pour faire pour surveillance
 let listeSurveillances = []
 
 let enregistrerSurveillance = () => {
@@ -172,3 +196,7 @@ let supprimerSurveillance = () => {
     fs.writeFileSync('data/surveillances.json', son)
     console.log(listeSurveillances)
 }
+
+
+
+

@@ -2,21 +2,23 @@
   {
     "id": "sv-01",
     "nomServeur": "DIP",
-    "adresse": "/dip/client",
-    "port": "9000",
+    "adresse": "google.com",
+    "port": "80",
     "min": "45",
     "sec": "30",
     "action": "jnzk ",
+    "actif":true,
     "lastcheck": 500
   },
   {
     "id": "sv-02",
     "nomServeur": "dip2",
-    "adresse": "/dip/client",
-    "port": "8080",
+    "adresse": "gmail.com",
+    "port": "453",
     "min": "1",
     "sec": "30",
     "action": "fsnvjf",
+    "actif":true,
     "lastcheck": 500
   }
 ]
