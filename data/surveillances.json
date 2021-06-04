@@ -1,24 +1,20 @@
 [
   {
-    "id": "sv-01",
+    "id": "sv-00",
     "nomServeur": "DIP",
     "adresse": "google.com",
     "port": "80",
-    "min": "45",
+    "min": "0",
     "sec": "30",
-    "action": "jnzk ",
-    "actif":true,
-    "lastcheck": 500
+    "action": "jnzk "
   },
   {
-    "id": "sv-02",
+    "id": "sv-01",
     "nomServeur": "dip2",
     "adresse": "gmail.com",
     "port": "453",
-    "min": "1",
-    "sec": "30",
-    "action": "fsnvjf",
-    "actif":true,
-    "lastcheck": 500
+    "min": "0",
+    "sec": "10",
+    "action": "fsnvjf"
   }
 ]

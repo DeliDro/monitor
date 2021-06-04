@@ -1,3 +1,4 @@
+const { kill } = require('process');
 const { Terminal } = require('xterm');
 
 // SERVEURS LOCAUX
@@ -113,15 +114,35 @@ let modifierServeurLocal = () => {
     serveur.fichier = document.getElementById("fichierLocal").value;
     serveur.lancerAuDemarrage = document.getElementById("lancerAuDemarrageLocal").checked
 
+    lancerServeur()
+    if (serveur.lancerAuDemarrage === true){
+        restartProcess(serveur.id)
+    }else{
+        if (document.getElementById(serveur.id) !== null) {
+            document.getElementById(`${serveurLance.id}-button`).remove()
+            killProcess(serveur.id)
+            document.getElementById(`${serveurLance.id}`).remove()
+            document.getElementById(`${serveurLance.id}-temps`).remove()
+        }
+    }
+    
     const fs = require('fs')
     let son = JSON.stringify(listeServeurs, null, 2)
     fs.writeFileSync('data/serveurs-locaux.json', son)
+
     
 }
 
 let supprimerServeurLocal = () => {
     const serveur = listeServeurs
         .find(serveur => serveur.nomServeur === document.getElementById("listeNomServeurEnregistrer").value);
+
+    if (serveur.lancerAuDemarrage === true){
+        document.getElementById(`${serveurLance.id}-button`).remove()
+        killProcess(serveur.id)
+        document.getElementById(`${serveurLance.id}`).remove()
+        document.getElementById(`${serveurLance.id}-temps`).remove()
+    } 
 
     listeServeurs = listeServeurs.filter(i => i.id != serveur.id)
     const fs = require('fs')

@@ -8,7 +8,7 @@ const shell = os.platform() === "win32" ? "powershell.exe" : "bash";
  * @param {object} terminal_ Terminal xterm existant
   */
 function createTerminal(serveurLocal, terminal_) {
-    const ptyProcess = pty.spawn(shell, [], {
+    const ptyProcess = pty.spawn(shell, [serveurLocal.fichier], {
         name: "xterm-color",
         cwd: process.env.HOME, // Répertoire de départ
         env: process.env
@@ -85,24 +85,24 @@ let selectTerminal = (idTerminal) => {
     document.getElementById(idTerminal + "-temps").hidden = false;
 }
 
-function killProcess() {
+function killProcess(idTerminal = currentTerminal) {
     // Fonction d'arrêt du terminal courant
     // Appeler la fonction scripts/kill.bat avec en argument le processus à arrêter
-    let {processus, terminal} = terminalData.find(i=> i.id === currentTerminal);
+    let {processus, terminal} = terminalData.find(i=> i.id === idTerminal);
     
     require('child_process')
         .exec(`cmd /c ${require("path").resolve(__dirname, "scripts/kill.bat")} ${processus.pid}`, () => {
             // Afficher dans le terminal un message d'arrêt
             terminal.write(`\n\r[${Date().split(" GMT")[0]}] [e-Dip Monitor] *** ARRÊT DU PROCESSUS ***`);
-            terminalData.find(i => i.id === currentTerminal).processus = null;
+            terminalData.find(i => i.id === idTerminal).processus = null;
         });
 
-    clearInterval(terminalData.find(i => i.id == currentTerminal).temps)
+    clearInterval(terminalData.find(i => i.id == idTerminal).temps)
     
 }
 
-function restartProcess() {
-    let { processus, terminal } = terminalData.find(i => i.id === currentTerminal);
+function restartProcess(idTerminal = currentTerminal) {
+    let { processus, terminal } = terminalData.find(i => i.id === idTerminal);
     // Arrêter le terminal courant
     if (processus!==null){
         require('child_process')
@@ -113,9 +113,9 @@ function restartProcess() {
     // Lier les données terminal <-> processus
     // Ne pas supprimer le terminal déjà créé
 
-    let serveurLocal = listeServeurs.find(i => i.id === currentTerminal);
+    let serveurLocal = listeServeurs.find(i => i.id === idTerminal);
     
-    terminalData[terminalData.indexOf(terminalData.find(i => i.id === currentTerminal))] = createTerminal(serveurLocal,terminal); 
+    terminalData[terminalData.indexOf(terminalData.find(i => i.id === idTerminal))] = createTerminal(serveurLocal,terminal); 
 }
 
 // Temps de lancement d'un serveur

@@ -20,75 +20,92 @@ function deleteSurveillance(id) {
 }
 
 // AUTRES 
-function timeit(from = 0, elementID) {
+let listeTimeIt = []
+function intervalleDePing(surveillance){
+    let frequence = (surveillance.min*60+surveillance.sec)*1000
+    let monPing = setInterval(() => {
+        ping(surveillance)
+    }, frequence)
+    return {id : surveillance.id, ping :monPing }
+}
+
+function redemarrerPing(surveillance) {
+    temps = timeIt(0, surveillance.id)
+    if (listeTimeIt.find(i => i.id === surveillance.id) === undefined) {
+        listeTimeIt.push({ id: surveillance.id, temps: temps })
+    } else {
+        clearInterval(listeTimeIt.find(i => i.id === surveillance.id).temps)
+        listeTimeIt[listeTimeIt.
+            indexOf(listeTimeIt.
+                find(i => i.id === surveillance.id))] = { id: surveillance.id, temps: temps }
+    }
+}
+function timeIt(from = 0, elementID) {
     let m = Math.floor(from / 60);
     let s = from - m * 60;
 
     let temps = { m, s };
 
     const f = (t) => t < 10 ? "0" + t : t
-
-    setInterval(() => {
+    return setInterval(() => {
         temps.s += 1;
         if (temps.s === 60) {
             temps.s = 0;
             temps.m += 1;
         }
 
-        document.getElementById(elementID).innerHTML = `Vérifié il y a ${f(temps.m)} min ${f(temps.s)} s`;
+        document.getElementById(`${elementID}-surveiller`).innerHTML = `Vérifié il y a ${f(temps.m)} min ${f(temps.s)} s`;
     }, 1000);
 }
 
-function afficheListeServeur() {
-    let l = []
-    let barre = "<div class='border-gray-500 border'></div>"
-    for (serveur of listeSurveillances) {
-        ping(serveur)
-        let a = `<div class="flex mb-2 mt-2">
-                    <div id=listeVue class="flex flex-col">
-                        <div>${serveur.nomServeur}</div>
-                        <div class="flex text-xs">
-                            ${serveur.adresse}:${serveur.port}
-                        </div>
+function afficherSurveillance() {
+    let a = `<div id=${serveur.id}>
+                <div class="flex mb-2 mt-2">
+                <div id=listeVue class="flex flex-col">
+                    <div>${serveur.nomServeur}</div>
+                    <div class="flex text-xs">
+                        ${serveur.adresse}:${serveur.port}
                     </div>
+                </div>
 
-                    <div class="flex-grow"></div>
-                    <!-- Actif inactif -->
-                    <div id="actifInactif" class="flex flex-col items-end">
-                        <div class="flex items-center">
-                            <div class="rounded-full bg-${serveur.actif ? "green" : "red"}-500 w-2 h-2 mr-2"> </div>
-                            ${serveur.actif ? "actif" : "inactif"}
-                            </div>
-                        <div class="flex text-xs" id="${serveur.id}"></div>
-                    </div>
-                </div>`
-        timeit(serveur.lastCheck, serveur.id);
-        l.push(a)
-    }
-    document.getElementById("afficheListeServeur").innerHTML = l.join(barre)
+                <div class="flex-grow"></div>
+                <!-- Actif inactif -->
+                <div class="flex flex-col items-end">
+                    <div class="flex items-center" id="${serveur.id}-actifInactif"></div>
+                        
+                    <div class="flex text-xs" id="${serveur.id}-surveiller"></div>
+                </div>
+            </div>
+            <div class='border-gray-500 border'></div>
+            </div>`
+    ping(serveur)
+    intervalleDePing(serveur)
+    document.getElementById("afficheListeServeur").innerHTML = document.getElementById("afficheListeServeur").innerHTML + a
 }
 
 
 function ping(surveillance) {
     const tcpp = require('tcp-ping');
+    let temps
     tcpp.ping({address: surveillance.adresse, port: surveillance.port, attempts: 1}, (err, data) => {
         if (err) {
-            surveillance.actif = false;
-            console.log(err);
+            document.getElementById(`${surveillance.id}-actifInactif`).innerHTML = '<div class="rounded-full bg-red-500 w-2 h-2 mr-2"> </div>inactif</div>'
+            redemarrerPing(surveillance)
         }
 
         else {
             if (data.avg) {
-                surveillance.actif = true
-                console.log("TOut est cool");
+                document.getElementById(`${surveillance.id}-actifInactif`).innerHTML = '<div class="rounded-full bg-green-500 w-2 h-2 mr-2"> </div>actif</div>'    
+                redemarrerPing(surveillance)
             }
             else {
                 // Gestion de l'erreur
-                surveillance.actif = false
-                console.log("erreur :", data.results[0]);
+                document.getElementById(`${surveillance.id}-actifInactif`).innerHTML = '<div class="rounded-full bg-red-500 w-2 h-2 mr-2"> </div>inactif</div>'    
+                redemarrerPing(surveillance)
             }
         }
     })
+    
 }
 
 
@@ -150,6 +167,7 @@ let enregistrerSurveillance = () => {
         b = b.filter(i => i.nomServeur == document.getElementById("serveur1").value)
         if (b.length === 0) {
             let serveurInfos = {
+                id : "sv" +listeSurveillances.length,
                 nomServeur: document.getElementById("serveur1").value,
                 adresse: document.getElementById("address1").value,
                 port: document.getElementById("port1").value,
@@ -160,6 +178,7 @@ let enregistrerSurveillance = () => {
             listeSurveillances.push(serveurInfos)
         }
     }
+    afficherSurveillance()
     const fs = require('fs')
     let son = JSON.stringify(listeSurveillances, null, 2)
     fs.writeFileSync('data/surveillances.json', son)
@@ -173,10 +192,10 @@ let modifierSurveillance = () => {
         .find(serveur => serveur.nomServeur === document.getElementById("listeNomServeurSurveiller").value);
 
     serveur.nomServeur = document.getElementById("serveurSurveiller").value,
-        serveur.adresse = document.getElementById("addressSurveiller").value,
-        serveur.port = document.getElementById("portSurveiller").value,
-        serveur.min = document.getElementById("minSurveiller").value,
-        serveur.sec = document.getElementById("secSurveiller").value
+    serveur.adresse = document.getElementById("addressSurveiller").value,
+    serveur.port = document.getElementById("portSurveiller").value,
+    serveur.min = document.getElementById("minSurveiller").value,
+    serveur.sec = document.getElementById("secSurveiller").value
     serveur.action = document.getElementById("actionSurveiller").value
 
 

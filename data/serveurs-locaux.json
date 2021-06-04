@@ -2,21 +2,21 @@
   {
     "adresse": "localhost",
     "fichier": "C:\\Users\\criterion\\Desktop\\xterm\\test.bat",
-    "id": "sl-02",
-    "lancerAuDemarrage": true,
+    "id": "sl-00",
+    "lancerAuDemarrage": false,
     "nomServeur": "reality",
-    "port": "456"
+    "port": "45"
   },
   {
     "adresse": "localhost",
     "fichier": "C:\\Users\\criterion\\Desktop\\xterm\\test2.bat",
-    "id": "sl-03",
-    "lancerAuDemarrage": false,
+    "id": "sl-01",
+    "lancerAuDemarrage": true,
     "nomServeur": "Elasticsearch",
     "port": "8800"
   },
   {
-    "id": "sl-01",
+    "id": "sl-02",
     "nomServeur": "virtual",
     "adresse": "nzzeizn",
     "port": "578",
@@ -25,42 +25,10 @@
   },
   {
     "id": "sl-04",
-    "nomServeur": "tatatata",
-    "adresse": "heigth",
-    "port": "5040",
-    "fichier": "C:\\Users\\criterion\\Desktop\\Documents\\cours.bat",
-    "lancerAuDemarrage": true
-  },
-  {
-    "id": "sl-05",
-    "nomServeur": "bamabam",
-    "adresse": "assinie",
-    "port": "500",
-    "fichier": "plage",
-    "lancerAuDemarrage": true
-  },
-  {
-    "id": "sl-06",
-    "nomServeur": "shbsenuz",
-    "adresse": "assinie",
-    "port": "500",
-    "fichier": "plage",
-    "lancerAuDemarrage": true
-  },
-  {
-    "id": "sl-07",
-    "nomServeur": "dijns",
-    "adresse": "kuqebnc",
-    "port": "52145",
-    "fichier": " idkvljks",
+    "nomServeur": "",
+    "adresse": "",
+    "port": "",
+    "fichier": "",
     "lancerAuDemarrage": false
-  },
-  {
-    "id": "sl-08",
-    "nomServeur": "dnvfjjfkhc",
-    "adresse": "kuqebnc",
-    "port": "52145",
-    "fichier": " idkvljks",
-    "lancerAuDemarrage": true
   }
 ]
