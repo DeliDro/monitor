@@ -1,30 +1,14 @@
 [
   {
     "adresse": "localhost",
-    "fichier": "C:\\Users\\criterion\\Desktop\\xterm\\test.bat",
-    "id": "sl-00",
-    "lancerAuDemarrage": false,
-    "nomServeur": "reality",
-    "port": "45"
-  },
-  {
-    "adresse": "localhost",
     "fichier": "C:\\Users\\criterion\\Desktop\\xterm\\test2.bat",
-    "id": "sl-01",
+    "id": "sl-00",
     "lancerAuDemarrage": true,
     "nomServeur": "Elasticsearch",
     "port": "8800"
   },
   {
-    "id": "sl-02",
-    "nomServeur": "virtual",
-    "adresse": "nzzeizn",
-    "port": "578",
-    "fichier": "C:\\Users\\criterion\\Desktop\\attaque.bat",
-    "lancerAuDemarrage": true
-  },
-  {
-    "id": "sl-04",
+    "id": "sl-01",
     "nomServeur": "",
     "adresse": "",
     "port": "",

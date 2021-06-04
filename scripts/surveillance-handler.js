@@ -58,7 +58,7 @@ function timeIt(from = 0, elementID) {
     }, 1000);
 }
 
-function afficherSurveillance() {
+function afficherSurveillance(serveur) {
     let a = `<div id=${serveur.id}>
                 <div class="flex mb-2 mt-2">
                 <div id=listeVue class="flex flex-col">
@@ -102,6 +102,24 @@ function ping(surveillance) {
                 // Gestion de l'erreur
                 document.getElementById(`${surveillance.id}-actifInactif`).innerHTML = '<div class="rounded-full bg-red-500 w-2 h-2 mr-2"> </div>inactif</div>'    
                 redemarrerPing(surveillance)
+                
+                //notification
+                const notifier = require('node-notifier');
+                const path = require('path');
+
+                notifier.notify(
+                    {
+                        title: 'E-Dip Monitor',
+                        message: `${surveillance.nomServeur} inactif`,
+                        icon: path.join(__dirname, 'IMG_20190918_181919.jpg'), // Absolute path (doesn't work on balloons)
+                        sound: true, // Only Notification Center or Windows Toasters
+                        wait: true // Wait with callback, until user action is taken against notification, does not apply to Windows Toasters as they always wait or notify-send as it does not support the wait option
+                    },
+                    function (err, response, metadata) {
+                        // Response is response from notification
+                        // Metadata contains activationType, activationAt, deliveredAt
+                    }
+                );
             }
         }
     })
@@ -152,8 +170,9 @@ function afficheInfoSurveillance(objetServeur) {
 let listeSurveillances = []
 
 let enregistrerSurveillance = () => {
+    let serveurInfos
     if (listeSurveillances.length === 0) {
-        let serveurInfos = {
+        serveurInfos = {
             nomServeur: document.getElementById("serveur1").value,
             adresse: document.getElementById("address1").value,
             port: document.getElementById("port1").value,
@@ -166,7 +185,7 @@ let enregistrerSurveillance = () => {
         let b = listeSurveillances
         b = b.filter(i => i.nomServeur == document.getElementById("serveur1").value)
         if (b.length === 0) {
-            let serveurInfos = {
+            serveurInfos = {
                 id : "sv" +listeSurveillances.length,
                 nomServeur: document.getElementById("serveur1").value,
                 adresse: document.getElementById("address1").value,
@@ -178,7 +197,7 @@ let enregistrerSurveillance = () => {
             listeSurveillances.push(serveurInfos)
         }
     }
-    afficherSurveillance()
+    afficherSurveillance(serveurInfos)
     const fs = require('fs')
     let son = JSON.stringify(listeSurveillances, null, 2)
     fs.writeFileSync('data/surveillances.json', son)

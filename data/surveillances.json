@@ -1,14 +1,5 @@
 [
   {
-    "id": "sv-00",
-    "nomServeur": "DIP",
-    "adresse": "google.com",
-    "port": "80",
-    "min": "0",
-    "sec": "30",
-    "action": "jnzk "
-  },
-  {
     "id": "sv-01",
     "nomServeur": "dip2",
     "adresse": "gmail.com",
@@ -16,5 +7,32 @@
     "min": "0",
     "sec": "10",
     "action": "fsnvjf"
+  },
+  {
+    "id": "sv-02",
+    "nomServeur": "DIP API",
+    "adresse": "192.168.1.16",
+    "port": "8800",
+    "min": "",
+    "sec": "10",
+    "action": "RIEN"
+  },
+  {
+    "id": "sv-03",
+    "nomServeur": "DIp Client WEB",
+    "adresse": "192.168.1.16",
+    "port": "3000",
+    "min": "",
+    "sec": "10",
+    "action": "RIEN"
+  },
+  {
+    "id": "sv-05",
+    "nomServeur": "sdfgh",
+    "adresse": "192.168.1.16",
+    "port": "9200",
+    "min": "",
+    "sec": "30",
+    "action": "ceci ceka"
   }
 ]
