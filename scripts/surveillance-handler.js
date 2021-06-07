@@ -63,9 +63,27 @@ function timeIt(from = 0, elementID) {
 function modifierPing(surveillance){
     let objetPing = intervalleDePing(surveillance)
     clearInterval(listePing.find(i => i.id === surveillance.id).ping)
+    document.getElementById(`${surveillance.id}`).innerHTML = `<div class="flex mb-2 mt-2">
+                <div id=listeVue class="flex flex-col">
+                    <div>${surveillance.nomServeur}</div>
+                    <div class="flex text-xs">
+                        ${surveillance.adresse}:${surveillance.port}
+                    </div>
+                </div>
+
+                <div class="flex-grow"></div>
+                <!-- Actif inactif -->
+                <div class="flex flex-col items-end">
+                    <div class="flex items-center" id="${surveillance.id}-actifInactif"></div>
+                        
+                    <div class="flex text-xs" id="${surveillance.id}-surveiller"></div>
+                </div>
+            </div>
+            <div class='border-gray-500 border'></div>`
     listePing[listePing.
         indexOf(listePing.
             find(i => i.id === surveillance.id))] = objetPing
+
 }
 
 function afficherSurveillance(serveur) {
