@@ -27,7 +27,7 @@
             <input
                 type="button" value="Ajouter" 
                 onclick="show('add')"
-                class="bg-blue-700 text-white p-2 ease-in-out duration-100 hover:bg-blue-400 cursor-pointer"
+                class="bg-blue-700 text-white p-2 ease-in-out duration-100 hover:bg-blue-400 cursor-pointer focus:outline-none"
             >
             <!-- Options -->
             <div
@@ -49,7 +49,7 @@
         <div class="flex flex-col mr-4">
             <!-- Titre -->
             <input type="button" value="Configurer" onclick="show('config')"
-                class="bg-blue-700 text-white p-2 ease-in-out duration-100 hover:bg-blue-400 cursor-pointer">
+                class="bg-blue-700 text-white p-2 ease-in-out duration-100 hover:bg-blue-400 cursor-pointer focus:outline-none">
             <!-- Options -->
             <div name="config" id="config" hidden class="bg-blue-500 absolute mt-10 text-white cursor-pointer">
                 <!-- Serveur local -->
@@ -67,13 +67,13 @@
         <div class="flex flex-col">
             <!-- Titre -->
             <input type="button" value="Surveiller" onclick="getSurveillances(),show('watch')"
-                class="bg-blue-700 text-white p-2 ease-in-out duration-100 hover:bg-blue-400 cursor-pointer">
+                class="bg-blue-700 text-white p-2 ease-in-out duration-100 hover:bg-blue-400 cursor-pointer focus:outline-none">
         </div>
 
         <div class="flex-grow items-center"></div>
         <!--Help/setting-->
         <div>
-            <p class="flex items-center bg-blue-700 p-2 ease-in-out duration-100 hover:bg-blue-400 cursor-pointer">
+            <p class="flex items-center bg-blue-700 p-2 ease-in-out duration-100 hover:bg-blue-400 cursor-pointer focus:outline-none">
                 <label for="help"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1em" height="1em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet"
                     viewBox="0 0 24 24"><path d="M15.07 11.25l-.9.92C13.45 12.89 13 13.5 13 15h-2v-.5c0-1.11.45-2.11 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41a2 2 0 0 0-2-2a2 2 0 0 0-2 2H8a4 4 0 0 1 4-4a4 4 0 0 1 4 4a3.2 3.2 0 0 1-.93 2.25M13 19h-2v-2h2M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10a10 10 0 0 0 10-10c0-5.53-4.5-10-10-10z" fill="#A5B4FC"/></svg></label>
                 
@@ -81,7 +81,7 @@
             </p>
         </div>
         <div>
-            <p class="flex items-center bg-blue-700 p-2 ease-in-out duration-100 hover:bg-blue-400 cursor-pointer">
+            <p class="flex items-center bg-blue-700 p-2 ease-in-out duration-100 hover:bg-blue-400 cursor-pointer focus:outline-none">
                 <label for="setting"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false"
                     width="1.5em" height="1.5em"
                     style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);"
@@ -131,7 +131,7 @@
                 <input type="button" value="+" class="bg-gray-500 text-lg pl-2 pr-2 border-l-2 border-white focus:outline-none cursor-pointer"
                     onclick="show('button'), affichePlus()">
             </p>
-            <div class="bg-blue-500 p-1 pl-2 pr-2 hover:bg-blue-400 z-50 absolute mt-8" id="button" hidden></div>
+            <div class="bg-blue-500 z-50 absolute mt-8" id="button" hidden></div>
         </div>
         
     </div>
@@ -342,13 +342,33 @@
                             </div>
                         </div>
 
-                        <!-- action -->
+                        <!-- actions -->
                         <div>
                             <p class="flex flex-col mb-2">
-                                <label for="action" style="font-family:Arial, Helvetica, sans-serif" class="ml-2">
-                                    Action
+                                <label for="action1" style="font-family:Arial, Helvetica, sans-serif" class="ml-2">
+                                    Action 1
                                 </label>
-                                <input type="text" id="action" name="action"
+                                <input type="text" id="action1" name="action1"
+                                    class="border-2 focus:border-blue-500 border-gray-500 p-1 rounded-2xl shadow focus:outline-none pr-2 pl-2"
+                                    autocomplete="off">
+                            </p>
+                        </div>
+                        <div>
+                            <p class="flex flex-col mb-2">
+                                <label for="action2" style="font-family:Arial, Helvetica, sans-serif" class="ml-2">
+                                    Action 2
+                                </label>
+                                <input type="text" id="action2" name="action2"
+                                    class="border-2 focus:border-blue-500 border-gray-500 p-1 rounded-2xl shadow focus:outline-none pr-2 pl-2"
+                                    autocomplete="off">
+                            </p>
+                        </div>
+                        <div>
+                            <p class="flex flex-col mb-2">
+                                <label for="action3" style="font-family:Arial, Helvetica, sans-serif" class="ml-2">
+                                    Action 3
+                                </label>
+                                <input type="text" id="action3" name="action3"
                                     class="border-2 focus:border-blue-500 border-gray-500 p-1 rounded-2xl shadow focus:outline-none pr-2 pl-2"
                                     autocomplete="off">
                             </p>
@@ -410,7 +430,7 @@
                     <div class="flex flex-col">
                         <!-- Menu Nom serveur-->
                         <div class="bg-blue-700 text-white text-left">
-                            <select onchange="updateConfigLocalView()"  name="listeNomServeurEnregistrer" id="listeNomServeurEnregistrer" class="bg-blue-700 text-white ease-in-out duration-100">
+                            <select onchange="updateConfigLocalView()"  name="listeNomServeurEnregistrer" id="listeNomServeurEnregistrer" class="bg-blue-700 text-white ease-in-out duration-100 w-full focus:outline-none">
                             </select>
                         </div>
                     
@@ -523,7 +543,7 @@
                     
                         <p class="bg-blue-700 text-white text-left ">
                             <select onchange="updateConfigSurveillerView()" name="listeNomServeurSurveiller" id="listeNomServeurSurveiller"
-                                class="bg-blue-700 text-white ease-in-out duration-100">
+                                class="bg-blue-700 text-white ease-in-out duration-100 w-full focus:outline-none">
                             </select>
                         </p>
                    
@@ -596,13 +616,33 @@
                         </div>
                     </div>
 
-                    <!-- Action -->
+                    <!-- Les actions -->
                     <div>
                         <p class="flex flex-col mb-2">
-                            <label for="actionSurveiller" style="font-family:Arial, Helvetica, sans-serif" class="ml-2">
-                                Action
+                            <label for="actionSurveiller1" style="font-family:Arial, Helvetica, sans-serif" class="ml-2">
+                                Action 1
                             </label>
-                            <input type="text" id="actionSurveiller" name="actionSurveiller"
+                            <input type="text" id="actionSurveiller1" name="actionSurveiller1"
+                                class="border-2 focus:border-blue-500 border-gray-500 p-1 rounded-2xl shadow focus:outline-none pr-2 pl-2"
+                                autocomplete="off">
+                        </p>
+                    </div>
+                    <div>
+                        <p class="flex flex-col mb-2">
+                            <label for="actionSurveiller2" style="font-family:Arial, Helvetica, sans-serif" class="ml-2">
+                                Action 2
+                            </label>
+                            <input type="text" id="actionSurveiller2" name="actionSurveiller2"
+                                class="border-2 focus:border-blue-500 border-gray-500 p-1 rounded-2xl shadow focus:outline-none pr-2 pl-2"
+                                autocomplete="off">
+                        </p>
+                    </div>
+                    <div>
+                        <p class="flex flex-col mb-2">
+                            <label for="actionSurveiller3" style="font-family:Arial, Helvetica, sans-serif" class="ml-2">
+                                Action 3
+                            </label>
+                            <input type="text" id="actionSurveiller3" name="actionSurveiller3"
                                 class="border-2 focus:border-blue-500 border-gray-500 p-1 rounded-2xl shadow focus:outline-none pr-2 pl-2"
                                 autocomplete="off">
                         </p>

@@ -127,7 +127,7 @@ function affichePlus(){
     for (let serveur of listeServeurLance) {
         //ajout du nom du serveur
         let input = document.createElement("input");
-        input.setAttribute('class', 'nomServeur');
+        input.setAttribute('class', 'bg-transparent text-white focus:outline-none hover:bg-blue-400 w-full');
         input.setAttribute('type', 'button')
         input.addEventListener('click' , function () {
             listeServeurs[listeServeurs.
@@ -140,7 +140,9 @@ function affichePlus(){
             fs.writeFileSync('data/serveurs-locaux.json', son)
         })
         input.value = serveur.nomServeur;
-        document.getElementById('button').appendChild(input);
+        let div = document.createElement('div')
+        div.appendChild(input);
+        document.getElementById('button').appendChild(div)
     }
 }
 

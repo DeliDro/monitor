@@ -3,7 +3,7 @@
     "adresse": "localhost",
     "fichier": "C:\\Users\\criterion\\Desktop\\xterm\\test2.bat",
     "id": "sl-00",
-    "lancerAuDemarrage": true,
+    "lancerAuDemarrage": false,
     "nomServeur": "Elasticsearch",
     "port": "8800"
   },
@@ -11,7 +11,7 @@
     "adresse": "localhost",
     "fichier": "C:\\Users\\criterion\\Desktop\\xterm\\test2.bat",
     "id": "sl-01",
-    "lancerAuDemarrage": true,
+    "lancerAuDemarrage": false,
     "nomServeur": "serveur2",
     "port": "8800"
   }

@@ -185,7 +185,10 @@ function afficheInfoSurveillance(objetServeur) {
         ["portSurveiller", objetServeur.port, "value"],
         ["minSurveiller", objetServeur.min, "value"],
         ["secSurveiller", objetServeur.sec, "value"],
-        ["actionSurveiller", objetServeur.action, "value"]
+        ["actionSurveiller1", objetServeur.action1, "value"],
+        ["actionSurveiller2", objetServeur.action2, "value"],
+        ["actionSurveiller3", objetServeur.action3, "value"]
+      
 
     ]
 
@@ -206,7 +209,9 @@ let enregistrerSurveillance = () => {
             port: document.getElementById("port1").value,
             min: document.getElementById("min").value,
             sec: document.getElementById("sec").value,
-            action: document.getElementById("action").value
+            action1: document.getElementById("action1").value,
+            action2: document.getElementById("action2").value,
+            action3: document.getElementById("action3").value
         }
         listeSurveillances.push(serveurInfos)
     } else {
@@ -220,7 +225,9 @@ let enregistrerSurveillance = () => {
                 port: document.getElementById("port1").value,
                 min: document.getElementById("min").value,
                 sec: document.getElementById("sec").value,
-                action: document.getElementById("action").value
+                action1: document.getElementById("action1").value,
+                action2: document.getElementById("action2").value,
+                action3: document.getElementById("action3").value
             }
             listeSurveillances.push(serveurInfos)
         }
@@ -242,8 +249,10 @@ let modifierSurveillance = () => {
     serveur.adresse = document.getElementById("addressSurveiller").value,
     serveur.port = document.getElementById("portSurveiller").value,
     serveur.min = document.getElementById("minSurveiller").value,
-    serveur.sec = document.getElementById("secSurveiller").value
-    serveur.action = document.getElementById("actionSurveiller").value
+    serveur.sec = document.getElementById("secSurveiller").value,
+    serveur.action1 = document.getElementById("actionSurveiller1").value,
+    serveur.action2 = document.getElementById("actionSurveiller2").value,
+    serveur.action3 = document.getElementById("actionSurveiller3").value
 
     modifierPing(serveur)
     const fs = require('fs')

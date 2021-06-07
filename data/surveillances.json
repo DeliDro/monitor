@@ -1,20 +1,24 @@
 [
   {
-    "id": "sv-03",
+    "id": "sv-00",
     "nomServeur": "DIp Client WEB",
     "adresse": "192.168.1.17",
     "port": "3000",
     "min": "",
     "sec": "5",
-    "action": "RIEN"
+    "action1": "RIEN",
+    "action2": "RIEN",
+    "action3": "RIEN"
   },
   {
-    "id": "sv-02",
+    "id": "sv-01",
     "nomServeur": "tpt",
     "adresse": "192.168.1.11",
     "port": "3000",
     "min": "",
     "sec": "10",
-    "action": "rien"
+    "action1": "rien",
+    "action2": "RIEN",
+    "action3": "RIEN"
   }
 ]
