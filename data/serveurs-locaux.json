@@ -8,11 +8,11 @@
     "port": "8800"
   },
   {
+    "adresse": "localhost",
+    "fichier": "C:\\Users\\criterion\\Desktop\\xterm\\test2.bat",
     "id": "sl-01",
-    "nomServeur": "",
-    "adresse": "",
-    "port": "",
-    "fichier": "",
-    "lancerAuDemarrage": false
+    "lancerAuDemarrage": true,
+    "nomServeur": "serveur2",
+    "port": "8800"
   }
 ]

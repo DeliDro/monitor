@@ -37,9 +37,10 @@ function createTerminal(serveurLocal, terminal_) {
     return { id: serveurLocal.id, processus: ptyProcess, terminal: terminal, temps: temps};
 }
 
+
 // AFFICHAGE
 const show = (toShow) => {
-    const showables = ["ajoutServeurLocal", "add", "config"].filter(i => i !== toShow);
+    const showables = ["ajoutServeurLocal", "add", "config","button"].filter(i => i !== toShow);
 
     for (const showable of showables) {
         document.getElementById(showable).hidden = true;
@@ -97,7 +98,7 @@ function killProcess(idTerminal = currentTerminal) {
             terminalData.find(i => i.id === idTerminal).processus = null;
         });
 
-    clearInterval(terminalData.find(i => i.id == idTerminal).temps)
+    clearInterval(terminalData.find(i => i.id === idTerminal).temps)
     
 }
 
@@ -116,6 +117,31 @@ function restartProcess(idTerminal = currentTerminal) {
     let serveurLocal = listeServeurs.find(i => i.id === idTerminal);
     
     terminalData[terminalData.indexOf(terminalData.find(i => i.id === idTerminal))] = createTerminal(serveurLocal,terminal); 
+}
+
+//Ajouter un terminal depuis la liste avec +
+function affichePlus(){
+    document.getElementById('button').innerHTML = ""
+    let listeServeurLance = listeServeurs
+        .filter(i => i.lancerAuDemarrage === false)//Liste des serveurs qu'on peut lancer 
+    for (let serveur of listeServeurLance) {
+        //ajout du nom du serveur
+        let input = document.createElement("input");
+        input.setAttribute('class', 'nomServeur');
+        input.setAttribute('type', 'button')
+        input.addEventListener('click' , function () {
+            listeServeurs[listeServeurs.
+                indexOf(listeServeurs.
+                    find(i => i===serveur))].lancerAuDemarrage = true
+            show('button')
+            lancerServeur()
+            const fs = require('fs')
+            let son = JSON.stringify(listeServeurs, null, 2)
+            fs.writeFileSync('data/serveurs-locaux.json', son)
+        })
+        input.value = serveur.nomServeur;
+        document.getElementById('button').appendChild(input);
+    }
 }
 
 // Temps de lancement d'un serveur

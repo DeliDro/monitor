@@ -94,7 +94,7 @@
                         fill="white" />
                 </svg></label>
                 
-                <input type="button" id="setting" value="Paramètre" class="bg-transparent text-white">
+                <input type="button" id="setting" value="Paramètres" class="bg-transparent text-white">
             </p>
         </div>
     </div>
@@ -126,9 +126,14 @@
     <div class="flex items-start">
         <div class="flex items-start" id="nom">
         </div>
-        <p>
-            <input type="button" value="+" class="bg-gray-500 text-lg pl-2 pr-2 border-l-2 border-white">
-        </p>
+        <div class="flex flex-col">
+            <p>
+                <input type="button" value="+" class="bg-gray-500 text-lg pl-2 pr-2 border-l-2 border-white focus:outline-none cursor-pointer"
+                    onclick="show('button'), affichePlus()">
+            </p>
+            <div class="bg-blue-500 p-1 pl-2 pr-2 hover:bg-blue-400 z-50 absolute mt-8" id="button" hidden></div>
+        </div>
+        
     </div>
     
 

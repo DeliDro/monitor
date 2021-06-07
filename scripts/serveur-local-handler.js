@@ -119,10 +119,10 @@ let modifierServeurLocal = () => {
         restartProcess(serveur.id)
     }else{
         if (document.getElementById(serveur.id) !== null) {
-            document.getElementById(`${serveurLance.id}-button`).remove()
             killProcess(serveur.id)
-            document.getElementById(`${serveurLance.id}`).remove()
-            document.getElementById(`${serveurLance.id}-temps`).remove()
+            document.getElementById(`${serveur.id}-button`).remove()
+            document.getElementById(`${serveur.id}`).remove()
+            document.getElementById(`${serveur.id}-temps`).remove()
         }
     }
     
@@ -138,10 +138,10 @@ let supprimerServeurLocal = () => {
         .find(serveur => serveur.nomServeur === document.getElementById("listeNomServeurEnregistrer").value);
 
     if (serveur.lancerAuDemarrage === true){
-        document.getElementById(`${serveurLance.id}-button`).remove()
+        document.getElementById(`${serveur.id}-button`).remove()
         killProcess(serveur.id)
-        document.getElementById(`${serveurLance.id}`).remove()
-        document.getElementById(`${serveurLance.id}-temps`).remove()
+        document.getElementById(`${serveur.id}`).remove()
+        document.getElementById(`${serveur.id}-temps`).remove()
     } 
 
     listeServeurs = listeServeurs.filter(i => i.id != serveur.id)
@@ -186,7 +186,11 @@ let lancerServeur = () => {
             ptemps.setAttribute('id',`${serveurLance.id}-temps`)
             document.getElementById('piedDePage').appendChild(ptemps)
 
-            terminalData.push(createTerminal(serveurLance));
+            if (terminalData.find(i => i.id === serveurLance.id)=== undefined){
+                terminalData.push(createTerminal(serveurLance))
+            }else{
+                terminalData[terminalData.indexOf(terminalData.find(i => i.id === serveurLance.id))] = createTerminal(serveurLance)
+            };
 
         }
         selectTerminal(listeServeurLance[listeServeurLance.length - 1].id)
