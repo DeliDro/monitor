@@ -21,6 +21,7 @@ function deleteSurveillance(id) {
 
 // AUTRES 
 let listeTimeIt = []
+let listePing = []
 function intervalleDePing(surveillance){
     let frequence = (surveillance.min*60+surveillance.sec)*1000
     let monPing = setInterval(() => {
@@ -29,8 +30,8 @@ function intervalleDePing(surveillance){
     return {id : surveillance.id, ping :monPing }
 }
 
-function redemarrerPing(surveillance) {
-    temps = timeIt(0, surveillance.id)
+function compteAReboursPing(surveillance) {
+    let temps = timeIt(0, surveillance.id)
     if (listeTimeIt.find(i => i.id === surveillance.id) === undefined) {
         listeTimeIt.push({ id: surveillance.id, temps: temps })
     } else {
@@ -40,6 +41,7 @@ function redemarrerPing(surveillance) {
                 find(i => i.id === surveillance.id))] = { id: surveillance.id, temps: temps }
     }
 }
+
 function timeIt(from = 0, elementID) {
     let m = Math.floor(from / 60);
     let s = from - m * 60;
@@ -56,6 +58,14 @@ function timeIt(from = 0, elementID) {
 
         document.getElementById(`${elementID}-surveiller`).innerHTML = `Vérifié il y a ${f(temps.m)} min ${f(temps.s)} s`;
     }, 1000);
+}
+
+function modifierPing(surveillance){
+    let objetPing = intervalleDePing(surveillance)
+    clearInterval(listePing.find(i => i.id === surveillance.id).ping)
+    listePing[listePing.
+        indexOf(listePing.
+            find(i => i.id === surveillance.id))] = objetPing
 }
 
 function afficherSurveillance(serveur) {
@@ -79,29 +89,28 @@ function afficherSurveillance(serveur) {
             <div class='border-gray-500 border'></div>
             </div>`
     ping(serveur)
-    intervalleDePing(serveur)
+    listePing.push(intervalleDePing(serveur))
     document.getElementById("afficheListeServeur").innerHTML = document.getElementById("afficheListeServeur").innerHTML + a
 }
 
 
 function ping(surveillance) {
     const tcpp = require('tcp-ping');
-    let temps
     tcpp.ping({address: surveillance.adresse, port: surveillance.port, attempts: 1}, (err, data) => {
         if (err) {
             document.getElementById(`${surveillance.id}-actifInactif`).innerHTML = '<div class="rounded-full bg-red-500 w-2 h-2 mr-2"> </div>inactif</div>'
-            redemarrerPing(surveillance)
+            compteAReboursPing(surveillance)
         }
 
         else {
             if (data.avg) {
                 document.getElementById(`${surveillance.id}-actifInactif`).innerHTML = '<div class="rounded-full bg-green-500 w-2 h-2 mr-2"> </div>actif</div>'    
-                redemarrerPing(surveillance)
+                compteAReboursPing(surveillance)
             }
             else {
                 // Gestion de l'erreur
                 document.getElementById(`${surveillance.id}-actifInactif`).innerHTML = '<div class="rounded-full bg-red-500 w-2 h-2 mr-2"> </div>inactif</div>'    
-                redemarrerPing(surveillance)
+                compteAReboursPing(surveillance)
                 
                 //notification
                 const notifier = require('node-notifier');
@@ -173,6 +182,7 @@ let enregistrerSurveillance = () => {
     let serveurInfos
     if (listeSurveillances.length === 0) {
         serveurInfos = {
+            id: "sv-0" + listeSurveillances.length,
             nomServeur: document.getElementById("serveur1").value,
             adresse: document.getElementById("address1").value,
             port: document.getElementById("port1").value,
@@ -186,7 +196,7 @@ let enregistrerSurveillance = () => {
         b = b.filter(i => i.nomServeur == document.getElementById("serveur1").value)
         if (b.length === 0) {
             serveurInfos = {
-                id : "sv" +listeSurveillances.length,
+                id : "sv-0" +listeSurveillances.length,
                 nomServeur: document.getElementById("serveur1").value,
                 adresse: document.getElementById("address1").value,
                 port: document.getElementById("port1").value,
@@ -217,7 +227,7 @@ let modifierSurveillance = () => {
     serveur.sec = document.getElementById("secSurveiller").value
     serveur.action = document.getElementById("actionSurveiller").value
 
-
+    modifierPing(serveur)
     const fs = require('fs')
     let son = JSON.stringify(listeSurveillances, null, 2)
     fs.writeFileSync('data/surveillances.json', son)
@@ -229,6 +239,9 @@ let supprimerSurveillance = () => {
         .find(serveur => serveur.nomServeur === document.getElementById("listeNomServeurSurveiller").value);
     console.log(serveur)
     listeSurveillances = listeSurveillances.filter(i => i.id != serveur.id)
+    clearInterval(listePing.find(i => i.id === serveur.id).ping)
+    clearInterval(listeTimeIt.find(i => i.id === serveur.id).temps)
+    document.getElementById(`${serveur.id}`).remove()
     const fs = require('fs')
     let son = JSON.stringify(listeSurveillances, null, 2)
     fs.writeFileSync('data/surveillances.json', son)

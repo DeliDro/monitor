@@ -73,7 +73,7 @@ let listeServeurs = []
 let enregistrerServeurLocal = () => {
     if (listeServeurs.length === 0) {
         let serveurInfos = {
-            id: "sl"+listeServeurs.length,
+            id: "sl-0"+(listeServeurs.length+1),
             nomServeur: document.getElementById("nom-serveur-local").value,
             adresse: document.getElementById("address-serveur-local").value,
             port: document.getElementById("port-serveur-local").value,

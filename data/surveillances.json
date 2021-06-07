@@ -5,11 +5,11 @@
     "adresse": "192.168.1.11",
     "port": "3000",
     "min": "",
-    "sec": "10",
+    "sec": "20",
     "action": "RIEN"
   },
   {
-    "id": "sv2",
+    "id": "sv-02",
     "nomServeur": "tpt",
     "adresse": "192.168.1.11",
     "port": "3000",
