@@ -259,149 +259,134 @@
 
     <!-- Pop-ups - Ajout Surveillannce serveur distant -->
     <div id="surveillanceServeurDistant" class="absolute" hidden>
-        <div class="flex w-screen h-screen text-sm absolute">
+        <div class="flex flex-col w-screen h-screen text-sm absolute">
             <!-- Fond transparent -->
-            <div class="absolute w-screen h-screen bg-gray-300 opacity-50" onclick="show('surveillanceServeurDistant')"></div>
-
+            <div class="absolute w-screen h-screen bg-gray-300 opacity-50" onclick="show('surveillanceServeurDistant'),pop_upSurveillanceInitial()"></div>
+            
             <!-- Centrer horizontalement -->
             <div class="flex-grow"></div>
-        
-            <div class="flex flex-col">
+
+            <div class="flex flex">
                 <!-- Centrer verticalement -->
                 <div class="flex-grow"></div>
-        
-                <div class="flex flex-col items-center border-2 shadow-2xl rounded-2xl p-8 bg-white z-50">
+
+                <div class="flex flex-col items-center border-2 shadow-2xl rounded-2xl p-8 pt-4 pb-4 bg-white w-1/2 z-50">
+                    <!-- Titre de la section -->
                     <h2 style="font-family: Georgia, 'Times New Roman', Times, serif; font-size: x-large;" class="mb-6">
-                        Surveillance serveur distant</h2>
-                    <div class="flex flex-col">
-                        <!-- Nom du serveur -->
-                        <div>
-                            <p class="flex flex-col mb-2">
-                                <label for="serveur1" style="font-family:Arial, Helvetica, sans-serif" class="ml-2">
-                                    Nom du serveur
-                                </label>
-                                <input type="text" id="serveur1" name="serveur1"
-                                    class="border-2 focus:border-blue-500 border-gray-500 p-1 rounded-2xl shadow focus:outline-none pr-2 pl-2"
-                                    autocomplete="off">
-                            </p>
-                        </div>
-        
-                        <!-- Adresse et port -->
-                        <div class="flex items center mb-2">
-                            <p class="flex flex-col mr-4 flex-grow">
-                                <label for="address1" style="font-family:Arial, Helvetica, sans-serif" class="ml-2">
-                                    Adresse
-                                </label>
-                                <input type="text" id="address1" name="address1"
-                                    class="border-2 focus:border-blue-500 border-gray-500 p-1 rounded-2xl shadow focus:outline-none pr-2 pl-2"
-                                    autocomplete="off">
-                            </p>
-        
-                            <p class="flex flex-col w-24">
-                                <label for="port1" style="font-family:Arial, Helvetica, sans-serif" class="ml-2">
-                                    Port
-                                </label>
-                                <input type="number" id="port1" name="port1"
-                                    class="border-2 focus:border-blue-500 border-gray-500 p-1 rounded-2xl shadow focus:outline-none pr-2 pl-2"
-                                    autocomplete="off">
-                            </p>
-        
-                        </div>
-        
-                        <!-- Féquence de vérification -->
-                        <div>
-                            <div class="flex flex-col mb-2">
-        
-                                <p style="font-family:Arial, Helvetica, sans-serif;" class="ml-2">
-                                    Fréquence de vérification
+                        Ajout surveillance serveur distant
+                    </h2>
+
+                    <!-- Contenu -->
+                        <div class="flex flex-col w-full">
+                            <!-- Nom du serveur -->
+                            <div>
+                                <p class="flex flex-col mb-2">
+                                    <label for="serveur1" style="font-family:Arial, Helvetica, sans-serif" class="ml-2">
+                                        Nom du serveur
+                                    </label>
+                                    <input type="text" id="serveur1" name="serveur1"
+                                        class="border-2 focus:border-blue-500 border-gray-500 p-1 rounded-2xl shadow focus:outline-none pr-2 pl-2"
+                                        autocomplete="off">
                                 </p>
-        
-                                <div class="flex flex-row items-center">
-        
-                                    <!-- minutes -->
-                                    <p class="flex flex-row-reverse mr-3 items-center"
-                                        style="font-family:Arial, Helvetica, sans-serif;">
-                                        <label for="min">min</label>
-                                        <input type="number" id="min" name="min"
-                                            class="border-2 focus:border-blue-500 border-gray-500 p-1 rounded-2xl shadow focus:outline-none pr-2 pl-2 w-32"
-                                            autocomplete="off">
+                            </div>
+            
+                            <!-- Adresse et port -->
+                            <div class="flex items center mb-2">
+                                <p class="flex flex-col mr-4 flex-grow">
+                                    <label for="address1" style="font-family:Arial, Helvetica, sans-serif" class="ml-2">
+                                        Adresse
+                                    </label>
+                                    <input type="text" id="address1" name="address1"
+                                        class="border-2 focus:border-blue-500 border-gray-500 p-1 rounded-2xl shadow focus:outline-none pr-2 pl-2"
+                                        autocomplete="off">
+                                </p>
+            
+                                <p class="flex flex-col w-24">
+                                    <label for="port1" style="font-family:Arial, Helvetica, sans-serif" class="ml-2">
+                                        Port
+                                    </label>
+                                    <input type="number" id="port1" name="port1"
+                                        class="border-2 focus:border-blue-500 border-gray-500 p-1 rounded-2xl shadow focus:outline-none pr-2 pl-2"
+                                        autocomplete="off">
+                                </p>
+            
+                            </div>
+            
+                            <!-- Féquence de vérification -->
+                            <div>
+                                <div class="flex flex-col mb-2">
+            
+                                    <p style="font-family:Arial, Helvetica, sans-serif;" class="ml-2">
+                                        Fréquence de vérification
                                     </p>
-        
-                                    <!-- secondes -->
-                                    <p class="flex flex-row-reverse items-center"
-                                        style="font-family:Arial, Helvetica, sans-serif;">
-                                        <label for="sec">sec</label>
-                                        <input type="number" id="sec" name="sec" value="30"
-                                            class="border-2 focus:border-blue-500 border-gray-500 p-1 rounded-2xl shadow focus:outline-none pr-2 pl-2 w-16"
-                                            autocomplete="off">
-                                    </p>
-        
-                                    <div class="flex-grow"></div>
+            
+                                    <div class="flex flex-row items-center">
+            
+                                        <!-- minutes -->
+                                        <p class="flex flex-row-reverse mr-3 items-center"
+                                            style="font-family:Arial, Helvetica, sans-serif;">
+                                            <label for="min">min</label>
+                                            <input type="number" id="min" name="min"
+                                                class="border-2 focus:border-blue-500 border-gray-500 p-1 rounded-2xl shadow focus:outline-none pr-2 pl-2 w-32"
+                                                autocomplete="off">
+                                        </p>
+            
+                                        <!-- secondes -->
+                                        <p class="flex flex-row-reverse items-center"
+                                            style="font-family:Arial, Helvetica, sans-serif;">
+                                            <label for="sec">sec</label>
+                                            <input type="number" id="sec" name="sec" value="30"
+                                                class="border-2 focus:border-blue-500 border-gray-500 p-1 rounded-2xl shadow focus:outline-none pr-2 pl-2 w-16"
+                                                autocomplete="off">
+                                        </p>
+            
+                                        <div class="flex-grow"></div>
+                                    </div>
+            
                                 </div>
-        
+                            </div>
+
+                            <!-- actions -->
+                            <div class="border-2 border-gray-400 rounded-lg p-2">
+                                <div class="text-center text-gray-500">
+                                    Les actions définissent les opérations à effectuer lorsqu'un serveur ne répond pas correctement
+                                </div>
+                                <div id="actions" class="flex flex-col h-24 overflow-auto overflow-y-scroll p-2 mt-2 mb-2"></div>
+                                <input type="button" value="+ Ajouter une action"
+                                    class="mr-2 bg-gray-200 cursor-pointer rounded focus:outline-none w-full p-1"
+                                    onclick="ajouterAction('action','actions')"
+                                >
+                            </div>
+            
+                            <!-- Enregister ou annuler -->
+                            <div class="flex flex items-center justify-end mt-4">
+                                <p>
+                                    <input type="button" value="Annuler" 
+                                    class="mr-2 bg-white cursor-pointer" style="color:red;"
+                                    onclick="show('surveillanceServeurDistant'),pop_upSurveillanceInitial()">
+                                </p>
+            
+                                <p class="flex items-center hover:bg-blue-600 bg-gray-600 rounded shadow p-1"
+                                    onclick="enregistrerSurveillance();show('surveillanceServeurDistant'),pop_upSurveillanceInitial()"
+                                    >
+                                    <label for="save"><svg xmlns="http://www.w3.org/2000/svg"
+                                            xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false"
+                                            width="1em" height="1em"
+                                            style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);"
+                                            preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
+                                            <path fill="none" d="M9 14h6v5H9zm2-9h2v2h-2z" />
+                                            <path fill="none"
+                                                d="M7 14c0-1.103.897-2 2-2h6c1.103 0 2 .897 2 2v5h2.001L19 8.414L15.586 5H15v4H7V5H5v14h2v-5z" />
+                                            <path
+                                                d="M5 21h14c1.103 0 2-.897 2-2V8a.997.997 0 0 0-.293-.707l-4-4A.996.996 0 0 0 16 3H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2zm10-2H9v-5h6v5zM13 7h-2V5h2v2zM5 5h2v4h8V5h.586L19 8.414L19.001 19H17v-5c0-1.103-.897-2-2-2H9c-1.103 0-2 .897-2 2v5H5V5z"
+                                                fill="white" />
+                                        </svg></label>
+                                    <input type="button" value="Enregistrer" id="save"
+                                        class="bg-transparent text-white p-1 cursor-pointer">
+                                </p>
                             </div>
                         </div>
-
-                        <!-- actions -->
-                        <div>
-                            <p class="flex flex-col mb-2">
-                                <label for="action1" style="font-family:Arial, Helvetica, sans-serif" class="ml-2">
-                                    Action 1
-                                </label>
-                                <input type="text" id="action1" name="action1"
-                                    class="border-2 focus:border-blue-500 border-gray-500 p-1 rounded-2xl shadow focus:outline-none pr-2 pl-2"
-                                    autocomplete="off">
-                            </p>
-                        </div>
-                        <div>
-                            <p class="flex flex-col mb-2">
-                                <label for="action2" style="font-family:Arial, Helvetica, sans-serif" class="ml-2">
-                                    Action 2
-                                </label>
-                                <input type="text" id="action2" name="action2"
-                                    class="border-2 focus:border-blue-500 border-gray-500 p-1 rounded-2xl shadow focus:outline-none pr-2 pl-2"
-                                    autocomplete="off">
-                            </p>
-                        </div>
-                        <div>
-                            <p class="flex flex-col mb-2">
-                                <label for="action3" style="font-family:Arial, Helvetica, sans-serif" class="ml-2">
-                                    Action 3
-                                </label>
-                                <input type="text" id="action3" name="action3"
-                                    class="border-2 focus:border-blue-500 border-gray-500 p-1 rounded-2xl shadow focus:outline-none pr-2 pl-2"
-                                    autocomplete="off">
-                            </p>
-                        </div>
-        
-                        <!-- Enregister ou annuler -->
-                        <div class="flex flex items-center justify-end mt-4">
-                            <p>
-                                <input type="button" value="Annuler" 
-                                class="mr-2 bg-white cursor-pointer" style="color:red;"
-                                onclick="show('surveillanceServeurDistant')">
-                            </p>
-        
-                            <p class="flex items-center hover:bg-blue-600 bg-gray-600 rounded shadow p-1"
-                                onclick="enregistrerSurveillance();show('surveillanceServeurDistant')"
-                                >
-                                <label for="save"><svg xmlns="http://www.w3.org/2000/svg"
-                                        xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false"
-                                        width="1em" height="1em"
-                                        style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);"
-                                        preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
-                                        <path fill="none" d="M9 14h6v5H9zm2-9h2v2h-2z" />
-                                        <path fill="none"
-                                            d="M7 14c0-1.103.897-2 2-2h6c1.103 0 2 .897 2 2v5h2.001L19 8.414L15.586 5H15v4H7V5H5v14h2v-5z" />
-                                        <path
-                                            d="M5 21h14c1.103 0 2-.897 2-2V8a.997.997 0 0 0-.293-.707l-4-4A.996.996 0 0 0 16 3H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2zm10-2H9v-5h6v5zM13 7h-2V5h2v2zM5 5h2v4h8V5h.586L19 8.414L19.001 19H17v-5c0-1.103-.897-2-2-2H9c-1.103 0-2 .897-2 2v5H5V5z"
-                                            fill="white" />
-                                    </svg></label>
-                                <input type="button" value="Enregistrer" id="save"
-                                    class="bg-transparent text-white p-1 cursor-pointer">
-                            </p>
-                        </div>
-                    </div>
+                    
                 </div>
         
                 <div class="flex-grow"></div>
@@ -489,7 +474,7 @@
                         <!-- Enregister ou supprimer -->
                         <div class="flex flex items-center justify-end mt-4">
                             <p>
-                                <input type="button" value="supprimer" 
+                                <input type="button" value="Supprimer" 
                                 class="mr-2 bg-white cursor-pointer" style="color:red;"
                                 onclick="show('configurationServeurLocaux'),supprimerServeurLocal()">
                             </p>
@@ -525,161 +510,147 @@
 
     <!-- Pop-ups - Configuration surveillances des serveurs -->
     <div id="configurationSurveillance" class="absolute" hidden>
-        <div class="flex w-screen h-screen text-sm absolute">
+        <div class="flex flex-col w-screen h-screen text-sm absolute">
             <!-- Fond transparent -->
             <div class="absolute w-screen h-screen bg-gray-300 opacity-50" onclick="show('configurationSurveillance')"></div>
-        <!-- Centrer horizontalement -->
-        <div class="flex-grow"></div>
-    
-        <div class="flex flex-col">
-            <!-- Centrer verticalement -->
+            
+            <!-- Centrer horizontalement -->
             <div class="flex-grow"></div>
-    
-            <div class="flex flex-col items-center border-2 shadow-2xl rounded-2xl p-8 bg-white z-50">
-                <h2 style="font-family: Georgia, 'Times New Roman', Times, serif; font-size: x-large;" class="mb-6">
-                    Surveillance serveur distant</h2>
-                <div class="flex flex-col">
-                    <!-- Menu Nom serveur-->
+        
+            <div class="flex flex">
+                <!-- Centrer verticalement -->
+                <div class="flex-grow"></div>
+        
+                <div class="flex flex-col items-center border-2 shadow-2xl rounded-2xl p-8 pt-4 pb-4 bg-white w-1/2 z-50">
+                    <!-- Titre de la section -->
+                    <h2 style="font-family: Georgia, 'Times New Roman', Times, serif; font-size: x-large;" class="mb-6">
+                        Configuration surveillance serveur distant
+                    </h2>
                     
-                        <p class="bg-blue-700 text-white text-left ">
+                    <!-- Contenu -->
+                    <div class="flex flex-col w-full">
+                        <!-- Menu Nom serveur-->
+                        <p class="bg-blue-700 text-white text-left mb-2">
                             <select onchange="updateConfigSurveillerView()" name="listeNomServeurSurveiller" id="listeNomServeurSurveiller"
                                 class="bg-blue-700 text-white ease-in-out duration-100 w-full focus:outline-none">
                             </select>
                         </p>
-                   
-    
-                    <!-- Nom du serveur -->
-                    <div>
-                        <p class="flex flex-col mb-2">
-                            <label for="serveurSurveiller" style="font-family:Arial, Helvetica, sans-serif" class="ml-2">
-                                Nom du serveur
-                            </label>
-                            <input type="text" id="serveurSurveiller" name="serveurSurveiller"
-                                class="border-2 focus:border-blue-500 border-gray-500 p-1 rounded-2xl shadow focus:outline-none pr-2 pl-2"
-                                autocomplete="off">
-                        </p>
-                    </div>
-    
-                    <!-- Adresse et port -->
-                    <div class="flex items center mb-2">
-                        <p class="flex flex-col mr-4 flex-grow">
-                            <label for="addressSurveiller" style="font-family:Arial, Helvetica, sans-serif" class="ml-2">
-                                Adresse
-                            </label>
-                            <input type="text" id="addressSurveiller" name="addressSurveiller"
-                                class="border-2 focus:border-blue-500 border-gray-500 p-1 rounded-2xl shadow focus:outline-none pr-2 pl-2"
-                                autocomplete="off">
-                        </p>
-    
-                        <p class="flex flex-col w-24">
-                            <label for="portSurveiller" style="font-family:Arial, Helvetica, sans-serif" class="ml-2">
-                                Port
-                            </label>
-                            <input type="number" id="portSurveiller" name="portSurveiller"
-                                class="border-2 focus:border-blue-500 border-gray-500 p-1 rounded-2xl shadow focus:outline-none pr-2 pl-2"
-                                autocomplete="off">
-                        </p>
-    
-                    </div>
-    
-                    <!-- Féquence de vérification -->
-                    <div>
-                        <div class="flex flex-col mb-2">
-    
-                            <p style="font-family:Arial, Helvetica, sans-serif;" class="ml-2">
-                                Fréquence de vérification
+        
+                        <!-- Nom du serveur -->
+                        <div>
+                            <p class="flex flex-col mb-2">
+                                <label for="serveurSurveiller" style="font-family:Arial, Helvetica, sans-serif" class="ml-2">
+                                    Nom du serveur
+                                </label>
+                                <input type="text" id="serveurSurveiller" name="serveurSurveiller"
+                                    class="border-2 focus:border-blue-500 border-gray-500 p-1 rounded-2xl shadow focus:outline-none pr-2 pl-2"
+                                    autocomplete="off">
                             </p>
-    
-                            <div class="flex flex-row items-center">
-    
-                                <!-- minutes -->
-                                <p class="flex flex-row-reverse mr-3 items-center"
-                                    style="font-family:Arial, Helvetica, sans-serif;">
-                                    <label for="minSurveiller">min</label>
-                                    <input type="number" id="minSurveiller" name="minSurveiller"
-                                        class="border-2 focus:border-blue-500 border-gray-500 p-1 rounded-2xl shadow focus:outline-none pr-2 pl-2 w-32"
-                                        autocomplete="off">
+                        </div>
+        
+                        <!-- Adresse et port -->
+                        <div class="flex items center mb-2">
+                            <p class="flex flex-col mr-4 flex-grow">
+                                <label for="addressSurveiller" style="font-family:Arial, Helvetica, sans-serif" class="ml-2">
+                                    Adresse
+                                </label>
+                                <input type="text" id="addressSurveiller" name="addressSurveiller"
+                                    class="border-2 focus:border-blue-500 border-gray-500 p-1 rounded-2xl shadow focus:outline-none pr-2 pl-2"
+                                    autocomplete="off">
+                            </p>
+        
+                            <p class="flex flex-col w-24">
+                                <label for="portSurveiller" style="font-family:Arial, Helvetica, sans-serif" class="ml-2">
+                                    Port
+                                </label>
+                                <input type="number" id="portSurveiller" name="portSurveiller"
+                                    class="border-2 focus:border-blue-500 border-gray-500 p-1 rounded-2xl shadow focus:outline-none pr-2 pl-2"
+                                    autocomplete="off">
+                            </p>
+        
+                        </div>
+        
+                        <!-- Féquence de vérification -->
+                        <div>
+                            <div class="flex flex-col mb-2">
+        
+                                <p style="font-family:Arial, Helvetica, sans-serif;" class="ml-2">
+                                    Fréquence de vérification
                                 </p>
-    
-                                <!-- secondes -->
-                                <p class="flex flex-row-reverse items-center"
-                                    style="font-family:Arial, Helvetica, sans-serif;">
-                                    <label for="secSurveiller">sec</label>
-                                    <input type="number" id="secSurveiller" name="secSurveiller" value="30"
-                                        class="border-2 focus:border-blue-500 border-gray-500 p-1 rounded-2xl shadow focus:outline-none pr-2 pl-2 w-16"
-                                        autocomplete="off">
-                                </p>
-    
-                                <div class="flex-grow"></div>
+        
+                                <div class="flex flex-row items-center">
+        
+                                    <!-- minutes -->
+                                    <p class="flex flex-row-reverse mr-3 items-center"
+                                        style="font-family:Arial, Helvetica, sans-serif;">
+                                        <label for="minSurveiller">min</label>
+                                        <input type="number" id="minSurveiller" name="minSurveiller"
+                                            class="border-2 focus:border-blue-500 border-gray-500 p-1 rounded-2xl shadow focus:outline-none pr-2 pl-2 w-32"
+                                            autocomplete="off">
+                                    </p>
+        
+                                    <!-- secondes -->
+                                    <p class="flex flex-row-reverse items-center"
+                                        style="font-family:Arial, Helvetica, sans-serif;">
+                                        <label for="secSurveiller">sec</label>
+                                        <input type="number" id="secSurveiller" name="secSurveiller" value="30"
+                                            class="border-2 focus:border-blue-500 border-gray-500 p-1 rounded-2xl shadow focus:outline-none pr-2 pl-2 w-16"
+                                            autocomplete="off">
+                                    </p>
+        
+                                    <div class="flex-grow"></div>
+                                </div>
+        
                             </div>
-    
+                        </div>
+
+                        <!-- Les actions -->
+                        <div class="border-2 border-gray-400 rounded-lg p-2">
+                            <div class="text-center text-gray-500">
+                                Les actions définissent les opérations à effectuer lorsqu'un serveur ne répond pas correctement
+                            </div>
+                            
+                            <div id="actionsSurveiller" class="flex flex-col h-24 overflow-auto overflow-y-scroll p-2 mt-2 mb-2"> </div>
+                            
+                            <input
+                                type="button" value="+ Ajouter une action"
+                                class="mr-2 bg-gray-200 cursor-pointer rounded focus:outline-none w-full p-1"
+                                onclick="ajouterAction('actionSurveiller','actionsSurveiller')"
+                            >
+                        </div>
+                        
+                        <!-- Enregister ou supprimer -->
+                        <div class="flex flex items-center justify-end mt-4">
+                            <p>
+                                <input type="button" value="Supprimer" 
+                                class="mr-2 bg-white cursor-pointer" style="color:red;" 
+                                onclick="show('configurationSurveillance'),supprimerSurveillance()">
+                            </p>
+        
+                            <p class="flex items-center hover:bg-blue-600 bg-gray-600 rounded shadow p-1">
+                                <label for="save"><svg xmlns="http://www.w3.org/2000/svg"
+                                        xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false"
+                                        width="1em" height="1em"
+                                        style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);"
+                                        preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
+                                        <path fill="none" d="M9 14h6v5H9zm2-9h2v2h-2z" />
+                                        <path fill="none"
+                                            d="M7 14c0-1.103.897-2 2-2h6c1.103 0 2 .897 2 2v5h2.001L19 8.414L15.586 5H15v4H7V5H5v14h2v-5z" />
+                                        <path
+                                            d="M5 21h14c1.103 0 2-.897 2-2V8a.997.997 0 0 0-.293-.707l-4-4A.996.996 0 0 0 16 3H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2zm10-2H9v-5h6v5zM13 7h-2V5h2v2zM5 5h2v4h8V5h.586L19 8.414L19.001 19H17v-5c0-1.103-.897-2-2-2H9c-1.103 0-2 .897-2 2v5H5V5z"
+                                            fill="white" />
+                                    </svg></label>
+                                <input type="button" value="Enregistrer" id="save"
+                                    class="bg-transparent text-white p-1 cursor-pointer" onclick=" modifierSurveillance(),show('configurationSurveillance')">
+                            </p>
                         </div>
                     </div>
-
-                    <!-- Les actions -->
-                    <div>
-                        <p class="flex flex-col mb-2">
-                            <label for="actionSurveiller1" style="font-family:Arial, Helvetica, sans-serif" class="ml-2">
-                                Action 1
-                            </label>
-                            <input type="text" id="actionSurveiller1" name="actionSurveiller1"
-                                class="border-2 focus:border-blue-500 border-gray-500 p-1 rounded-2xl shadow focus:outline-none pr-2 pl-2"
-                                autocomplete="off">
-                        </p>
-                    </div>
-                    <div>
-                        <p class="flex flex-col mb-2">
-                            <label for="actionSurveiller2" style="font-family:Arial, Helvetica, sans-serif" class="ml-2">
-                                Action 2
-                            </label>
-                            <input type="text" id="actionSurveiller2" name="actionSurveiller2"
-                                class="border-2 focus:border-blue-500 border-gray-500 p-1 rounded-2xl shadow focus:outline-none pr-2 pl-2"
-                                autocomplete="off">
-                        </p>
-                    </div>
-                    <div>
-                        <p class="flex flex-col mb-2">
-                            <label for="actionSurveiller3" style="font-family:Arial, Helvetica, sans-serif" class="ml-2">
-                                Action 3
-                            </label>
-                            <input type="text" id="actionSurveiller3" name="actionSurveiller3"
-                                class="border-2 focus:border-blue-500 border-gray-500 p-1 rounded-2xl shadow focus:outline-none pr-2 pl-2"
-                                autocomplete="off">
-                        </p>
-                    </div>
-    
-                    <!-- Enregister ou supprimer -->
-                    <div class="flex flex items-center justify-end mt-4">
-                        <p>
-                            <input type="button" value="supprimer" 
-                            class="mr-2 bg-white cursor-pointer" style="color:red;" 
-                            onclick="show('configurationSurveillance'),supprimerSurveillance()">
-                        </p>
-    
-                        <p class="flex items-center hover:bg-blue-600 bg-gray-600 rounded shadow p-1">
-                            <label for="save"><svg xmlns="http://www.w3.org/2000/svg"
-                                    xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false"
-                                    width="1em" height="1em"
-                                    style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);"
-                                    preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
-                                    <path fill="none" d="M9 14h6v5H9zm2-9h2v2h-2z" />
-                                    <path fill="none"
-                                        d="M7 14c0-1.103.897-2 2-2h6c1.103 0 2 .897 2 2v5h2.001L19 8.414L15.586 5H15v4H7V5H5v14h2v-5z" />
-                                    <path
-                                        d="M5 21h14c1.103 0 2-.897 2-2V8a.997.997 0 0 0-.293-.707l-4-4A.996.996 0 0 0 16 3H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2zm10-2H9v-5h6v5zM13 7h-2V5h2v2zM5 5h2v4h8V5h.586L19 8.414L19.001 19H17v-5c0-1.103-.897-2-2-2H9c-1.103 0-2 .897-2 2v5H5V5z"
-                                        fill="white" />
-                                </svg></label>
-                            <input type="button" value="Enregistrer" id="save"
-                                class="bg-transparent text-white p-1 cursor-pointer" onclick=" modifierSurveillance(),show('configurationSurveillance')">
-                        </p>
-                    </div>
                 </div>
+        
+                <div class="flex-grow"></div>
             </div>
-    
+        
             <div class="flex-grow"></div>
-        </div>
-    
-        <div class="flex-grow"></div>
         </div>
     
     </div>
@@ -726,6 +697,8 @@
 
     <!-- POST SCRIPTS -->
     <script>
+        
+        let ajoutSurveillanceInit = document.getElementById('surveillanceServeurDistant').innerHTML
         getSurveillances()
         getServeursLocaux()
         lancerServeur()

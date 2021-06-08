@@ -184,20 +184,76 @@ function afficheInfoSurveillance(objetServeur) {
         ["addressSurveiller", objetServeur.adresse, "value"],
         ["portSurveiller", objetServeur.port, "value"],
         ["minSurveiller", objetServeur.min, "value"],
-        ["secSurveiller", objetServeur.sec, "value"],
-        ["actionSurveiller1", objetServeur.action1, "value"],
-        ["actionSurveiller2", objetServeur.action2, "value"],
-        ["actionSurveiller3", objetServeur.action3, "value"]
-      
-
+        ["secSurveiller", objetServeur.sec, "value"]
     ]
-
+    document.getElementById("actionsSurveiller").innerHTML = ""
+    
+    let i = 0
+    for (action of objetServeur.actions){
+        let a = `<p class="flex mb-2" id="actionSurveiller-${i}">
+                    <select name="actionSurveiller-${i}-1" id="actionSurveiller-${i}-1" class="focus:outline-none bg-white">
+                        <option value = "Pas de réponse">Pas de réponse</option>
+                    </select>
+                    <input type="text" name="actionSurveiller-${i}-2" id="actionSurveiller-${i}-2" placeholder="Chemin de l'action"
+                        class="focus:outline-none"
+                        value="${action.fichier}">
+                </p>`
+        document.getElementById('actionsSurveiller').innerHTML = document.getElementById('actionsSurveiller').innerHTML + a
+        i++
+    }
+    
     surveillance.map(surveillance => update(...surveillance));
+    
 }
 
 // AJOUT SURVEILLANCE
 //modifier pour faire pour surveillance
 let listeSurveillances = []
+
+//Ajoute les blocs d'actions
+function ajouterAction(lieu, id){
+    let nombreDeActions = document.getElementById(id).getElementsByTagName('input').length
+    let a = `
+        <div class="flex items-center w-full mb-2" id="${lieu}-${nombreDeActions}">
+            <p>Si&nbsp;:&nbsp;</p>
+            <select
+                name="${lieu}-${nombreDeActions}-1"
+                id="${lieu}-${nombreDeActions}-1"
+                class="focus:outline-none bg-white mr-1 -p-1 border-2 border-gray-500 rounded-lg"
+            >
+                <option value = "Pas de réponse">Pas de réponse</option>
+            </select>
+            
+            <input
+                type="text"
+                name="${lieu}-${nombreDeActions}-2"
+                id="${lieu}-${nombreDeActions}-2"
+                placeholder="Chemin de l'action"
+                class="focus:outline-none focus:border-blue-500 border-2 border-gray-500 pl-2 pr-2 rounded-lg flex-grow"
+            >
+        </div>
+    `
+    document.getElementById(id).innerHTML = document.getElementById(id).innerHTML + a
+}
+//Supprime les blocs actions ajoutés lors d'une nouvelle ouverture du pop-up
+function pop_upSurveillanceInitial(){
+    document.getElementById('surveillanceServeurDistant').innerHTML = ajoutSurveillanceInit
+    
+    
+}
+//liste des actions rentrer dans un enregistrement
+function listeDesActions(lieu,id) {
+    let nombreDeActions = document.getElementById(id).getElementsByTagName('input').length
+    let actions = []
+    for (let index = 0; index < nombreDeActions; index++) {
+        console.log(index)
+        actions.push({ action: document.getElementById(`${lieu}-${index}-1`).value, fichier: document.getElementById(`${lieu}-${index}-2`).value})
+    }
+    actions = actions.filter(i => i.fichier !=="")
+    
+    return actions
+    
+}
 
 let enregistrerSurveillance = () => {
     let serveurInfos
@@ -209,9 +265,7 @@ let enregistrerSurveillance = () => {
             port: document.getElementById("port1").value,
             min: document.getElementById("min").value,
             sec: document.getElementById("sec").value,
-            action1: document.getElementById("action1").value,
-            action2: document.getElementById("action2").value,
-            action3: document.getElementById("action3").value
+            actions : listeDesActions('action', 'actions')
         }
         listeSurveillances.push(serveurInfos)
     } else {
@@ -225,9 +279,7 @@ let enregistrerSurveillance = () => {
                 port: document.getElementById("port1").value,
                 min: document.getElementById("min").value,
                 sec: document.getElementById("sec").value,
-                action1: document.getElementById("action1").value,
-                action2: document.getElementById("action2").value,
-                action3: document.getElementById("action3").value
+                actions: listeDesActions('action', 'actions')
             }
             listeSurveillances.push(serveurInfos)
         }
@@ -239,20 +291,16 @@ let enregistrerSurveillance = () => {
     console.log(listeSurveillances)
 }
 
-
-
 let modifierSurveillance = () => {
     const serveur = listeSurveillances
         .find(serveur => serveur.nomServeur === document.getElementById("listeNomServeurSurveiller").value);
-
+    console.log(serveur)
     serveur.nomServeur = document.getElementById("serveurSurveiller").value,
     serveur.adresse = document.getElementById("addressSurveiller").value,
     serveur.port = document.getElementById("portSurveiller").value,
     serveur.min = document.getElementById("minSurveiller").value,
     serveur.sec = document.getElementById("secSurveiller").value,
-    serveur.action1 = document.getElementById("actionSurveiller1").value,
-    serveur.action2 = document.getElementById("actionSurveiller2").value,
-    serveur.action3 = document.getElementById("actionSurveiller3").value
+    serveur.actions = listeDesActions('actionSurveiller','actionsSurveiller')
 
     modifierPing(serveur)
     const fs = require('fs')

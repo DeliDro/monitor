@@ -1,24 +1,57 @@
 [
   {
-    "id": "sv-00",
-    "nomServeur": "DIp Client WEB",
-    "adresse": "192.168.1.17",
-    "port": "3000",
+    "id": "sv-04",
+    "nomServeur": "xdfghj",
+    "adresse": "652",
+    "port": "585",
     "min": "",
-    "sec": "5",
-    "action1": "RIEN",
-    "action2": "RIEN",
-    "action3": "RIEN"
+    "sec": "30",
+    "actions": [
+      {
+        "action": "Pas de réponse",
+        "fichier": "jlnvkr:jvmores"
+      },
+      {
+        "action": "Pas de réponse",
+        "fichier": "fkrjqzngkjlnr"
+      }
+    ]
   },
   {
     "id": "sv-01",
-    "nomServeur": "tpt",
-    "adresse": "192.168.1.11",
-    "port": "3000",
+    "nomServeur": "dfghjk",
+    "adresse": "5555",
+    "port": "55",
     "min": "",
-    "sec": "10",
-    "action1": "rien",
-    "action2": "RIEN",
-    "action3": "RIEN"
+    "sec": "30",
+    "actions": [
+      {
+        "action": "Pas de réponse",
+        "fichier": "huflhvset"
+      }
+    ]
+  },
+  {
+    "id": "sv-02",
+    "nomServeur": "rgjlstihkj",
+    "adresse": "2",
+    "port": "587",
+    "min": "",
+    "sec": "30",
+    "actions": []
+  },
+  {
+    "id": "sv-03",
+    "nomServeur": "shrgbksrkl:j",
+    "adresse": "nlrijsztmjmoihli",
+    "port": "4852",
+    "min": "",
+    "sec": "30",
+    "actions": [
+      {
+        "action": "Pas de réponse",
+        "fichier": "rgfsknlethnjkerngl"
+      }
+    ]
   }
 ]
