@@ -128,32 +128,41 @@ function ping(surveillance) {
             else {
                 // Gestion de l'erreur
                 document.getElementById(`${surveillance.id}-actifInactif`).innerHTML = '<div class="rounded-full bg-red-500 w-2 h-2 mr-2"> </div>inactif</div>'    
-                compteAReboursPing(surveillance)
-                
-                //notification
-                const notifier = require('node-notifier');
-                const path = require('path');
+                compteAReboursPing(surveillance);
+                for (action of surveillance.actions){
+                    executerAction(action)
+                }
 
-                notifier.notify(
-                    {
-                        title: 'E-Dip Monitor',
-                        message: `${surveillance.nomServeur} inactif`,
-                        icon: path.join(__dirname, 'IMG_20190918_181919.jpg'), // Absolute path (doesn't work on balloons)
-                        sound: true, // Only Notification Center or Windows Toasters
-                        wait: true // Wait with callback, until user action is taken against notification, does not apply to Windows Toasters as they always wait or notify-send as it does not support the wait option
-                    },
-                    function (err, response, metadata) {
-                        // Response is response from notification
-                        // Metadata contains activationType, activationAt, deliveredAt
-                    }
-                );
             }
         }
     })
     
 }
 
+function notification(){
+    // notification basique
+    const notifier = require('node-notifier');
+    const path = require('path');
 
+    notifier.notify(
+        {
+            title: 'E-Dip Monitor',
+            message: `${surveillance.nomServeur} inactif`,
+            icon: path.join(__dirname, 'IMG_20190918_181919.jpg'), // Absolute path (doesn't work on balloons)
+            sound: true, // Only Notification Center or Windows Toasters
+            wait: true // Wait with callback, until user action is taken against notification, does not apply to Windows Toasters as they always wait or notify-send as it does not support the wait option
+        },
+        function (err, response, metadata) {
+            // Response is response from notification
+            // Metadata contains activationType, activationAt, deliveredAt
+        }
+    )
+}
+
+function executerAction(action) {
+    require('child_process')
+        .exec(`cmd /c ${action.fichier}`)
+}
 //  CONFIGURATION SURVEILLANCE
 function updateConfigSurveillerView() {
     const serveur = listeSurveillances
@@ -190,14 +199,16 @@ function afficheInfoSurveillance(objetServeur) {
     
     let i = 0
     for (action of objetServeur.actions){
-        let a = `<p class="flex mb-2" id="actionSurveiller-${i}">
-                    <select name="actionSurveiller-${i}-1" id="actionSurveiller-${i}-1" class="focus:outline-none bg-white">
+        let a = `<div class="flex mb-2" id="actionSurveiller-${i}">
+                    <p>Action ${i+1}&nbsp;:&nbsp;</p>
+                    <select name="actionSurveiller-${i}-1" id="actionSurveiller-${i}-1" 
+                        class="focus:outline-none bg-white mr-1 -p-1 border-2 border-gray-500 rounded-lg">
                         <option value = "Pas de réponse">Pas de réponse</option>
                     </select>
                     <input type="text" name="actionSurveiller-${i}-2" id="actionSurveiller-${i}-2" placeholder="Chemin de l'action"
-                        class="focus:outline-none"
+                        class="focus:outline-none focus:border-blue-500 border-2 border-gray-500 pl-2 pr-2 rounded-lg flex-grow"
                         value="${action.fichier}">
-                </p>`
+                </div>`
         document.getElementById('actionsSurveiller').innerHTML = document.getElementById('actionsSurveiller').innerHTML + a
         i++
     }
@@ -215,7 +226,7 @@ function ajouterAction(lieu, id){
     let nombreDeActions = document.getElementById(id).getElementsByTagName('input').length
     let a = `
         <div class="flex items-center w-full mb-2" id="${lieu}-${nombreDeActions}">
-            <p>Si&nbsp;:&nbsp;</p>
+            <p>Action ${nombreDeActions+1}&nbsp;:&nbsp;</p>
             <select
                 name="${lieu}-${nombreDeActions}-1"
                 id="${lieu}-${nombreDeActions}-1"

@@ -1,23 +1,5 @@
 [
   {
-    "id": "sv-04",
-    "nomServeur": "xdfghj",
-    "adresse": "652",
-    "port": "585",
-    "min": "",
-    "sec": "30",
-    "actions": [
-      {
-        "action": "Pas de réponse",
-        "fichier": "jlnvkr:jvmores"
-      },
-      {
-        "action": "Pas de réponse",
-        "fichier": "fkrjqzngkjlnr"
-      }
-    ]
-  },
-  {
     "id": "sv-01",
     "nomServeur": "dfghjk",
     "adresse": "5555",
@@ -28,29 +10,6 @@
       {
         "action": "Pas de réponse",
         "fichier": "huflhvset"
-      }
-    ]
-  },
-  {
-    "id": "sv-02",
-    "nomServeur": "rgjlstihkj",
-    "adresse": "2",
-    "port": "587",
-    "min": "",
-    "sec": "30",
-    "actions": []
-  },
-  {
-    "id": "sv-03",
-    "nomServeur": "shrgbksrkl:j",
-    "adresse": "nlrijsztmjmoihli",
-    "port": "4852",
-    "min": "",
-    "sec": "30",
-    "actions": [
-      {
-        "action": "Pas de réponse",
-        "fichier": "rgfsknlethnjkerngl"
       }
     ]
   }

@@ -99,8 +99,6 @@
         </div>
     </div>
     
-
-    
     <!--Barre Rédémarrer/Arrêter-->
     <div class="flex items-center p-2">
         <p id="infos" class="flex">
@@ -413,6 +411,13 @@
                     <h2 style="font-family: Georgia, 'Times New Roman', Times, serif; font-size: x-large;" class="mb-6">
                         Configuration des serveurs locaux</h2>
                     <div class="flex flex-col">
+                        <!-- Retour -->
+                        <p class="flex items-center justify-start mt-4">
+                            <input type="button" value="Retour"
+                                class="mb-2 pr-1 pl-1 bg-white cursor-pointer focus:outline-none border rounded shadow" style="color:blue"
+                                onclick="show('configurationServeurLocaux')">
+                        </p>
+
                         <!-- Menu Nom serveur-->
                         <div class="bg-blue-700 text-white text-left">
                             <select onchange="updateConfigLocalView()"  name="listeNomServeurEnregistrer" id="listeNomServeurEnregistrer" class="bg-blue-700 text-white ease-in-out duration-100 w-full focus:outline-none">
@@ -529,6 +534,11 @@
                     
                     <!-- Contenu -->
                     <div class="flex flex-col w-full">
+                        <!-- Retour -->
+                        <p class="flex items-center justify-start mt-4">
+                            <input type="button" value="Retour" class="mb-2 pr-1 pl-1 bg-white cursor-pointer focus:outline-none border rounded shadow" style="color:blue"
+                                onclick="show('configurationSurveillance')">
+                        </p>
                         <!-- Menu Nom serveur-->
                         <p class="bg-blue-700 text-white text-left mb-2">
                             <select onchange="updateConfigSurveillerView()" name="listeNomServeurSurveiller" id="listeNomServeurSurveiller"
@@ -620,11 +630,11 @@
                         </div>
                         
                         <!-- Enregister ou supprimer -->
-                        <div class="flex flex items-center justify-end mt-4">
+                        <div class="flex items-center justify-end mt-4">
                             <p>
                                 <input type="button" value="Supprimer" 
                                 class="mr-2 bg-white cursor-pointer" style="color:red;" 
-                                onclick="show('configurationSurveillance'),supprimerSurveillance()">
+                                onclick="supprimerSurveillance()">
                             </p>
         
                             <p class="flex items-center hover:bg-blue-600 bg-gray-600 rounded shadow p-1">
@@ -641,7 +651,7 @@
                                             fill="white" />
                                     </svg></label>
                                 <input type="button" value="Enregistrer" id="save"
-                                    class="bg-transparent text-white p-1 cursor-pointer" onclick=" modifierSurveillance(),show('configurationSurveillance')">
+                                    class="bg-transparent text-white p-1 cursor-pointer" onclick="modifierSurveillance()">
                             </p>
                         </div>
                     </div>
@@ -697,11 +707,13 @@
 
     <!-- POST SCRIPTS -->
     <script>
-        
         let ajoutSurveillanceInit = document.getElementById('surveillanceServeurDistant').innerHTML
         getSurveillances()
         getServeursLocaux()
         lancerServeur()
+        function testFile(id) {
+                window.console.log("fichier : ", document.getElementById("file-test").files[0].path);
+            }
         for (serveur of listeSurveillances){
             afficherSurveillance(serveur)
         }
