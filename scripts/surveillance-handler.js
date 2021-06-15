@@ -22,6 +22,8 @@ function deleteSurveillance(id) {
 // AUTRES 
 let listeTimeIt = []
 let listePing = []
+let objetDeNotification = {}
+
 function intervalleDePing(surveillance){
     let frequence = (surveillance.min*60+surveillance.sec)*1000
     let monPing = setInterval(() => {
@@ -111,35 +113,46 @@ function afficherSurveillance(serveur) {
     document.getElementById("afficheListeServeur").innerHTML = document.getElementById("afficheListeServeur").innerHTML + a
 }
 
+function faireVerification(surveillance,etat,color) {
+    document.getElementById(`${surveillance.id}-actifInactif`).innerHTML = `<div class="rounded-full bg-${color}-500 w-2 h-2 mr-2"> </div>${etat}</div>`
+    compteAReboursPing(surveillance)
+}
+function casDePing(surveillance,etat,color) {
+    if (objetDeNotification[surveillance.id] == etat){
+        faireVerification(surveillance, etat, color)
+    }
+    else {
+        faireVerification(surveillance, etat, color)
+        notification(surveillance, etat)
+    }
+
+    objetDeNotification[surveillance.id] = etat
+}
 
 function ping(surveillance) {
     const tcpp = require('tcp-ping');
     tcpp.ping({address: surveillance.adresse, port: surveillance.port, attempts: 1}, (err, data) => {
         if (err) {
-            document.getElementById(`${surveillance.id}-actifInactif`).innerHTML = '<div class="rounded-full bg-red-500 w-2 h-2 mr-2"> </div>inactif</div>'
-            compteAReboursPing(surveillance)
+            casDePing(surveillance, "inactif", "red")
         }
-
+        
         else {
             if (data.avg) {
-                document.getElementById(`${surveillance.id}-actifInactif`).innerHTML = '<div class="rounded-full bg-green-500 w-2 h-2 mr-2"> </div>actif</div>'    
-                compteAReboursPing(surveillance)
+                casDePing(surveillance, "actif", "green")
             }
             else {
                 // Gestion de l'erreur
-                document.getElementById(`${surveillance.id}-actifInactif`).innerHTML = '<div class="rounded-full bg-red-500 w-2 h-2 mr-2"> </div>inactif</div>'    
-                compteAReboursPing(surveillance);
-                for (action of surveillance.actions){
+                casDePing(surveillance,"inactif","red")
+                for (action of surveillance.actions) {
                     executerAction(action)
-                }
-
+                };
             }
         }
     })
     
 }
 
-function notification(){
+function notification(surveillance, etat){
     // notification basique
     const notifier = require('node-notifier');
     const path = require('path');
@@ -147,21 +160,17 @@ function notification(){
     notifier.notify(
         {
             title: 'E-Dip Monitor',
-            message: `${surveillance.nomServeur} inactif`,
+            message: `${surveillance.nomServeur} ${etat}`,
             icon: path.join(__dirname, 'IMG_20190918_181919.jpg'), // Absolute path (doesn't work on balloons)
             sound: true, // Only Notification Center or Windows Toasters
             wait: true // Wait with callback, until user action is taken against notification, does not apply to Windows Toasters as they always wait or notify-send as it does not support the wait option
-        },
-        function (err, response, metadata) {
-            // Response is response from notification
-            // Metadata contains activationType, activationAt, deliveredAt
         }
     )
 }
 
 function executerAction(action) {
     require('child_process')
-        .exec(`cmd /c ${action.fichier}`)
+        .exec(`cmd /k start ${action.fichier}`)
 }
 //  CONFIGURATION SURVEILLANCE
 function updateConfigSurveillerView() {

@@ -1,15 +1,43 @@
 [
   {
-    "id": "sv-01",
-    "nomServeur": "dfghjk",
-    "adresse": "5555",
-    "port": "55",
+    "id": "sv-00",
+    "nomServeur": "surveillance1",
+    "adresse": "192.168.1.12",
+    "port": "3000",
     "min": "",
     "sec": "30",
     "actions": [
       {
         "action": "Pas de réponse",
-        "fichier": "huflhvset"
+        "fichier": "C:\\Users\\criterion\\Desktop\\xterm\\reponse.bat"
+      }
+    ]
+  },
+  {
+    "id": "sv-01",
+    "nomServeur": "surveillance2,",
+    "adresse": "192.168.1.12",
+    "port": "8800",
+    "min": "",
+    "sec": "30",
+    "actions": [
+      {
+        "action": "Pas de réponse",
+        "fichier": "jnkl,k,"
+      }
+    ]
+  },
+  {
+    "id": "sv-02",
+    "nomServeur": "surveillance3",
+    "adresse": "192.198.1.6",
+    "port": "7000",
+    "min": "",
+    "sec": "10",
+    "actions": [
+      {
+        "action": "Pas de réponse",
+        "fichier": "test.bat"
       }
     ]
   }

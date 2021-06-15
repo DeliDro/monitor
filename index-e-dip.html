@@ -481,11 +481,11 @@
                             <p>
                                 <input type="button" value="Supprimer" 
                                 class="mr-2 bg-white cursor-pointer" style="color:red;"
-                                onclick="show('configurationServeurLocaux'),supprimerServeurLocal()">
+                                onclick="supprimerServeurLocal(), afficheNomServeur()">
                             </p>
         
                             <p class="flex items-center bg-blue-600 rounded shadow p-1"
-                                onclick="modifierServeurLocal();show('configurationServeurLocaux')"
+                                onclick="modifierServeurLocal()"
                             >
                                 <label for="save"><svg xmlns="http://www.w3.org/2000/svg"
                                         xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false"
@@ -712,7 +712,7 @@
         getServeursLocaux()
         lancerServeur()
         function testFile(id) {
-                window.console.log("fichier : ", document.getElementById("file-test").files[0].path);
+                return document.getElementById(id).files[0].path;
             }
         for (serveur of listeSurveillances){
             afficherSurveillance(serveur)

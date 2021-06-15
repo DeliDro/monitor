@@ -14,7 +14,7 @@ function createTerminal(serveurLocal, terminal_) {
         env: process.env
     });
     
-    var terminal = terminal_ || new Terminal();
+    var terminal = terminal_ || new Terminal()
     
     if (!terminal_) terminal.open(document.getElementById(serveurLocal.id));
     else terminal.clear();

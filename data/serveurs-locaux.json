@@ -3,8 +3,8 @@
     "adresse": "192.168.1.17",
     "fichier": "C:\\Users\\criterion\\Desktop\\xterm\\test2.bat",
     "id": "sl-00",
-    "lancerAuDemarrage": true,
-    "nomServeur": "Elasticsearch",
+    "lancerAuDemarrage": false,
+    "nomServeur": "Serveur1",
     "port": "8800"
   },
   {
@@ -17,6 +17,22 @@
   },
   {
     "id": "sl-03",
+    "nomServeur": "serveur3",
+    "adresse": "192.1.20.5",
+    "port": "50",
+    "fichier": "",
+    "lancerAuDemarrage": false
+  },
+  {
+    "id": "sl-04",
+    "nomServeur": "serveur4",
+    "adresse": "192.168.1.20",
+    "port": "3300",
+    "fichier": "C:\\Users\\criterion\\Desktop\\xterm\\test2.bat",
+    "lancerAuDemarrage": true
+  },
+  {
+    "id": "sl-05",
     "nomServeur": "",
     "adresse": "",
     "port": "",
