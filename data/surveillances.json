@@ -38,6 +38,14 @@
       {
         "action": "Pas de réponse",
         "fichier": "test.bat"
+      },
+      {
+        "action": "Pas de réponse",
+        "fichier": "test2.bat"
+      },
+      {
+        "action": "Pas de réponse",
+        "fichier": "test3.bat"
       }
     ]
   }

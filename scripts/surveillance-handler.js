@@ -85,7 +85,8 @@ function modifierPing(surveillance){
     listePing[listePing.
         indexOf(listePing.
             find(i => i.id === surveillance.id))] = objetPing
-
+    
+    objetDeNotification[surveillance.id] = undefined
 }
 
 function afficherSurveillance(serveur) {
@@ -117,16 +118,24 @@ function faireVerification(surveillance,etat,color) {
     document.getElementById(`${surveillance.id}-actifInactif`).innerHTML = `<div class="rounded-full bg-${color}-500 w-2 h-2 mr-2"> </div>${etat}</div>`
     compteAReboursPing(surveillance)
 }
-function casDePing(surveillance,etat,color) {
-    if (objetDeNotification[surveillance.id] == etat){
-        faireVerification(surveillance, etat, color)
-    }
-    else {
+function casDePing(surveillance, etat, color) {
+    if (objetDeNotification[surveillance.id] == undefined) {
+        objetDeNotification[surveillance.id] = {}
+        objetDeNotification[surveillance.id]["compteur"] = 0
         faireVerification(surveillance, etat, color)
         notification(surveillance, etat)
     }
+    else {
+        if (objetDeNotification[surveillance.id]["etat"] == etat) {
+            faireVerification(surveillance, etat, color)
+        }
+        else {
+            faireVerification(surveillance, etat, color)
+            notification(surveillance, etat)
+        }
+    }
 
-    objetDeNotification[surveillance.id] = etat
+    objetDeNotification[surveillance.id]["etat"] = etat
 }
 
 function ping(surveillance) {
@@ -142,13 +151,15 @@ function ping(surveillance) {
             }
             else {
                 // Gestion de l'erreur
-                casDePing(surveillance,"inactif","red")
-                for (action of surveillance.actions) {
-                    executerAction(action)
+                casDePing(surveillance,"inactif","red")  
+                if (objetDeNotification[surveillance.id]["compteur"] < surveillance.actions.length) {
+                    executerAction(surveillance.actions[objetDeNotification[surveillance.id]["compteur"]])
+                    objetDeNotification[surveillance.id]["compteur"]++}
                 };
+                
             }
         }
-    })
+    )
     
 }
 
