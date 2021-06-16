@@ -129,7 +129,7 @@ let modifierServeurLocal = () => {
     const fs = require('fs')
     let son = JSON.stringify(listeServeurs, null, 2)
     fs.writeFileSync('data/serveurs-locaux.json', son)
-
+    afficheNomServeur()
     
 }
 
@@ -148,6 +148,7 @@ let supprimerServeurLocal = () => {
     const fs = require('fs')
     let son = JSON.stringify(listeServeurs, null, 2)
     fs.writeFileSync('data/serveurs-locaux.json', son)
+    afficheNomServeur()
     
 }
 

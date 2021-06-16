@@ -172,7 +172,7 @@ function notification(surveillance, etat){
         {
             title: 'E-Dip Monitor',
             message: `${surveillance.nomServeur} ${etat}`,
-            icon: path.join(__dirname, 'IMG_20190918_181919.jpg'), // Absolute path (doesn't work on balloons)
+            icon: path.join(__dirname, 'assets/logo - carre.jpg'), // Absolute path (doesn't work on balloons)
             sound: true, // Only Notification Center or Windows Toasters
             wait: true // Wait with callback, until user action is taken against notification, does not apply to Windows Toasters as they always wait or notify-send as it does not support the wait option
         }
@@ -180,8 +180,23 @@ function notification(surveillance, etat){
 }
 
 function executerAction(action) {
-    require('child_process')
-        .exec(`cmd /k start ${action.fichier}`)
+    if (fs.existsSync(action.fichier)){
+        require('child_process')
+        .exec(`cmd /k start ${action.fichier}`)}
+    else{
+        const notifier = require('node-notifier');
+        const path = require('path');
+
+        notifier.notify(
+            {
+                title: 'E-Dip Monitor',
+                message: `${action.fichier} n'existe pas`,
+                icon: path.join(__dirname, 'assets/logo - carre.jpg'), // Absolute path (doesn't work on balloons)
+                sound: true, // Only Notification Center or Windows Toasters
+                wait: true // Wait with callback, until user action is taken against notification, does not apply to Windows Toasters as they always wait or notify-send as it does not support the wait option
+            }
+        )
+    }
 }
 //  CONFIGURATION SURVEILLANCE
 function updateConfigSurveillerView() {
@@ -338,6 +353,7 @@ let modifierSurveillance = () => {
     let son = JSON.stringify(listeSurveillances, null, 2)
     fs.writeFileSync('data/surveillances.json', son)
     console.log(listeSurveillances)
+    afficheNomSurveillance()
 }
 
 let supprimerSurveillance = () => {
@@ -352,6 +368,7 @@ let supprimerSurveillance = () => {
     let son = JSON.stringify(listeSurveillances, null, 2)
     fs.writeFileSync('data/surveillances.json', son)
     console.log(listeSurveillances)
+    afficheNomSurveillance()
 }
 
 
