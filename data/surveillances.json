@@ -2,7 +2,7 @@
   {
     "id": "sv-00",
     "nomServeur": "surveillance1",
-    "adresse": "192.168.1.17",
+    "adresse": "192.168.1.12",
     "port": "3300",
     "min": "",
     "sec": "10",
