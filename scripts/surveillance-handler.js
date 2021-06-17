@@ -253,6 +253,24 @@ function afficheInfoSurveillance(objetServeur) {
     
 }
 
+//liste des actions rentrer dans un enregistrement
+function listeDesActions(id) {
+    let actionFileCollection = document.getElementById(id).getElementsByTagName('input')
+    let actionSelectedCollection = document.getElementById(id).getElementsByTagName('select')
+    let actions = []
+    for (let index = 0; index < actionSelectedCollection.length; index++) {
+        actions.push({ action: actionSelectedCollection[index].value, fichier: actionFileCollection[index].value })
+    }
+    actions = actions.filter(i => i.fichier !== "")
+
+    return actions
+
+}
+
+function supprimerAction(id) {
+    document.getElementById(id).remove()
+}
+
 // AJOUT SURVEILLANCE
 //modifier pour faire pour surveillance
 let listeSurveillances = []
@@ -290,23 +308,7 @@ function pop_upSurveillanceInitial(){
     
     
 }
-//liste des actions rentrer dans un enregistrement
-function listeDesActions(id) {
-    let actionFileCollection = document.getElementById(id).getElementsByTagName('input')
-    let actionSelectedCollection = document.getElementById(id).getElementsByTagName('select')
-    let actions = []
-    for (let index = 0; index < actionSelectedCollection.length; index++) {
-        actions.push({action : actionSelectedCollection[index].value, fichier : actionFileCollection[index].value})
-    }
-    actions = actions.filter(i => i.fichier !=="")
-    
-    return actions
-    
-}
 
-function supprimerAction(id){
-    document.getElementById(id).remove()
-}
 
 // ENREGISTRER SURVEILLANCE
 let enregistrerSurveillance = () => {
