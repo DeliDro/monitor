@@ -73,7 +73,7 @@ class Log {
         }
     }
 
-    save() {
+    async save() {
         return new Promise((resolve, reject) => {
             // Génération de date au format YYYY-MM-dd
             var date = new Date;
@@ -133,4 +133,5 @@ Log.EVENTS = {
 //     .save();
 // console.log(log);
 
-module.exports = Log;
+// Importation sous forme de module
+// module.exports = Log;

@@ -1,3 +1,4 @@
+const { info } = require('console');
 const { kill } = require('process');
 const { Terminal } = require('xterm');
 
@@ -155,7 +156,7 @@ let supprimerServeurLocal = () => {
 //Liste des terminaux
 let terminalData = [];
 
-let lancerServeur = () => {
+let lancerServeur = (infos) => {
     let listeServeurLance = listeServeurs
         .filter(i => i.lancerAuDemarrage === true)//Liste des serveurs à lancer
         .filter(a => document.getElementById(a.id) === null);//Liste des serveurs pas encore lancés
@@ -192,7 +193,13 @@ let lancerServeur = () => {
             }else{
                 terminalData[terminalData.indexOf(terminalData.find(i => i.id === serveurLance.id))] = createTerminal(serveurLance)
             };
-
+            log = new Log()
+                .type(0)
+                .evenement(Log.EVENTS.CREATION)
+                .URI(`${serveurLance.adresse} : ${serveurLance.port}`)
+                .serveur(`${serveurLance.nomServeur}`)
+                .donnees(infos + serveurLance.nomServeur)
+                .save();
         }
         selectTerminal(listeServeurLance[listeServeurLance.length - 1].id)
     }
