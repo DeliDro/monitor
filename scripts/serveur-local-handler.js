@@ -31,7 +31,7 @@ function updateConfigLocalView() {
     afficheInfoServeur(serveur);
 }
 
-function afficheNomServeur() {
+function afficheNomServeur(info = listeServeurs[0]) {
     document.getElementById('listeNomServeurEnregistrer').innerHTML = ""
     for (let serveur of listeServeurs) {
         //ajout du nom du serveur
@@ -42,7 +42,7 @@ function afficheNomServeur() {
     }
 
     if (listeServeurs.length != 0) {
-        afficheInfoServeur(listeServeurs[0])
+        afficheInfoServeur(info)
     }
 }
 
@@ -71,37 +71,40 @@ function removeItemOnce(arr, value) {
 
 let listeServeurs = []
 
+const creerServeur = () => {
+    let serveurInfos = {
+        id: "sl-0" + (listeServeurs.length + 1),
+        nomServeur: document.getElementById("nom-serveur-local").value,
+        adresse: document.getElementById("address-serveur-local").value,
+        port: document.getElementById("port-serveur-local").value,
+        fichier: document.getElementById("fichier-serveur-local").value,
+        lancerAuDemarrage: document.getElementById("lancerAuDemarrage-serveur-local").checked
+    }
+    listeServeurs.push(serveurInfos)
+    log = new Log()
+        .type(0)
+        .evenement(Log.EVENTS.CREATION)
+        .URI(`${serveurInfos.adresse} : ${serveurInfos.port}`)
+        .serveur(`${serveurInfos.nomServeur}`)
+        .donnees("Création de " + serveurInfos.nomServeur)
+        .save();
+}
+
 let enregistrerServeurLocal = () => {
     if (listeServeurs.length === 0) {
-        let serveurInfos = {
-            id: "sl-0"+(listeServeurs.length+1),
-            nomServeur: document.getElementById("nom-serveur-local").value,
-            adresse: document.getElementById("address-serveur-local").value,
-            port: document.getElementById("port-serveur-local").value,
-            lancerAuDemarrage: document.getElementById("lancerAuDemarrage-serveur-local").checked,
-            fichier: document.getElementById("fichier-serveur-local").value
-        }
-        listeServeurs.push(serveurInfos)
+        creerServeur()
     } else {
         let b = listeServeurs
         b = b.filter(i => i.nomServeur == document.getElementById("nom-serveur-local").value)
         if (b.length === 0) {
-            let serveurInfos = {
-                id: "sl-0" + (listeServeurs.length+1),
-                nomServeur: document.getElementById("nom-serveur-local").value,
-                adresse: document.getElementById("address-serveur-local").value,
-                port: document.getElementById("port-serveur-local").value,
-                fichier: document.getElementById("fichier-serveur-local").value,
-                lancerAuDemarrage: document.getElementById("lancerAuDemarrage-serveur-local").checked
-            }
-            listeServeurs.push(serveurInfos)
+            creerServeur()
         }
     }
     const fs = require('fs')
     let son = JSON.stringify(listeServeurs, null, 2)
     fs.writeFileSync('data/serveurs-locaux.json', son);
 
-    lancerServeur()
+    lancerServeur("démarrage de ")
 }
 
 
@@ -115,7 +118,16 @@ let modifierServeurLocal = () => {
     serveur.fichier = document.getElementById("fichierLocal").value;
     serveur.lancerAuDemarrage = document.getElementById("lancerAuDemarrageLocal").checked
 
-    lancerServeur()
+    log = new Log()
+        .type(0)
+        .evenement(Log.EVENTS.MODIFICATION)
+        .URI(`${serveur.adresse} : ${serveur.port}`)
+        .serveur(`${serveur.nomServeur}`)
+        .donnees("Modification de " + serveur.nomServeur)
+        .save();
+
+    lancerServeur("démarrage de ")
+
     if (serveur.lancerAuDemarrage === true){
         restartProcess(serveur.id)
     }else{
@@ -130,7 +142,7 @@ let modifierServeurLocal = () => {
     const fs = require('fs')
     let son = JSON.stringify(listeServeurs, null, 2)
     fs.writeFileSync('data/serveurs-locaux.json', son)
-    afficheNomServeur()
+    afficheNomServeur(serveur)
     
 }
 
@@ -145,12 +157,19 @@ let supprimerServeurLocal = () => {
         document.getElementById(`${serveur.id}-temps`).remove()
     } 
 
+    log = new Log()
+        .type(0)
+        .evenement(Log.EVENTS.SUPRESSION)
+        .URI(`${serveur.adresse} : ${serveur.port}`)
+        .serveur(`${serveur.nomServeur}`)
+        .donnees("Supression de " + serveur.nomServeur)
+        .save();
+    
     listeServeurs = listeServeurs.filter(i => i.id != serveur.id)
     const fs = require('fs')
     let son = JSON.stringify(listeServeurs, null, 2)
     fs.writeFileSync('data/serveurs-locaux.json', son)
-    afficheNomServeur()
-    
+    afficheNomServeur()    
 }
 
 //Liste des terminaux
@@ -195,7 +214,7 @@ let lancerServeur = (infos) => {
             };
             log = new Log()
                 .type(0)
-                .evenement(Log.EVENTS.CREATION)
+                .evenement(Log.EVENTS.DEMARRAGE)
                 .URI(`${serveurLance.adresse} : ${serveurLance.port}`)
                 .serveur(`${serveurLance.nomServeur}`)
                 .donnees(infos + serveurLance.nomServeur)

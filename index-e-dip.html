@@ -482,7 +482,7 @@
                             <p>
                                 <input type="button" value="Supprimer" 
                                 class="mr-2 bg-white cursor-pointer" style="color:red;"
-                                onclick="supprimerServeurLocal(), afficheNomServeur()">
+                                onclick="supprimerServeurLocal()">
                             </p>
         
                             <p class="flex items-center bg-blue-600 rounded shadow p-1"
@@ -711,12 +711,20 @@
         let ajoutSurveillanceInit = document.getElementById('surveillanceServeurDistant').innerHTML
         getSurveillances()
         getServeursLocaux()
-        lancerServeur("Lancement au démarrage du serveur")
+        lancerServeur("Lancement au démarrage de ")
+        
         function testFile(id) {
                 return document.getElementById(id).files[0].path;
             }
         for (serveur of listeSurveillances){
             afficherSurveillance(serveur)
+            log = new Log()
+                .type(1)
+                .evenement(Log.EVENTS.DEMARRAGE)
+                .URI(`${serveur.adresse} : ${serveur.port}`)
+                .serveur(`${serveur.nomServeur}`)
+                .donnees("Lancement au démarrge de " + serveur.nomServeur)
+                .save();
         }
     </script>
 </body>

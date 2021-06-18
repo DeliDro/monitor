@@ -99,7 +99,15 @@ function killProcess(idTerminal = currentTerminal) {
         });
 
     clearInterval(terminalData.find(i => i.id === idTerminal).temps)
-    
+
+    let serveurLocal = listeServeurs.find(i => i.id === idTerminal)
+    log = new Log()
+        .type(0)
+        .evenement(Log.EVENTS.ARRET)
+        .URI(`${serveurLocal.adresse} : ${serveurLocal.port}`)
+        .serveur(`${serveurLocal.nomServeur}`)
+        .donnees("Arrêt de " + serveurLocal.nomServeur)
+        .save();
 }
 
 function restartProcess(idTerminal = currentTerminal) {
@@ -116,7 +124,14 @@ function restartProcess(idTerminal = currentTerminal) {
 
     let serveurLocal = listeServeurs.find(i => i.id === idTerminal);
     
-    terminalData[terminalData.indexOf(terminalData.find(i => i.id === idTerminal))] = createTerminal(serveurLocal,terminal); 
+    terminalData[terminalData.indexOf(terminalData.find(i => i.id === idTerminal))] = createTerminal(serveurLocal,terminal);
+    log = new Log()
+        .type(0)
+        .evenement(Log.EVENTS.REDEMARRAGE)
+        .URI(`${serveurLocal.adresse} : ${serveurLocal.port}`)
+        .serveur(`${serveurLocal.nomServeur}`)
+        .donnees("Redémarrage de "+serveurLocal.nomServeur)
+        .save();
 }
 
 //Ajouter un terminal depuis la liste avec +
@@ -134,7 +149,7 @@ function affichePlus(){
                 indexOf(listeServeurs.
                     find(i => i===serveur))].lancerAuDemarrage = true
             show('button')
-            lancerServeur()
+            lancerServeur("démarrage de ")
             const fs = require('fs')
             let son = JSON.stringify(listeServeurs, null, 2)
             fs.writeFileSync('data/serveurs-locaux.json', son)
