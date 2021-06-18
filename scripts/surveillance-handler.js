@@ -86,7 +86,16 @@ function modifierPing(surveillance){
         indexOf(listePing.
             find(i => i.id === surveillance.id))] = objetPing
     
+    log = new Log()
+        .type(1)
+        .evenement(Log.EVENTS.DEMARRAGE)
+        .URI(`${surveillance.adresse} : ${surveillance.port}`)
+        .serveur(`${surveillance.nomServeur}`)
+        .donnees("Démarrage de " + surveillance.nomServeur)
+        .save();
+
     objetDeNotification[surveillance.id] = undefined
+
 }
 
 function afficherSurveillance(serveur) {
@@ -112,6 +121,14 @@ function afficherSurveillance(serveur) {
     ping(serveur)
     listePing.push(intervalleDePing(serveur))
     document.getElementById("afficheListeServeur").innerHTML = document.getElementById("afficheListeServeur").innerHTML + a
+    
+    log = new Log()
+        .type(1)
+        .evenement(Log.EVENTS.DEMARRAGE)
+        .URI(`${serveur.adresse} : ${serveur.port}`)
+        .serveur(`${serveur.nomServeur}`)
+        .donnees("Démarrage de " + serveur.nomServeur)
+        .save();
 }
 
 function faireVerification(surveillance,etat,color) {
@@ -124,6 +141,14 @@ function casDePing(surveillance, etat, color) {
         objetDeNotification[surveillance.id]["compteur"] = 0
         faireVerification(surveillance, etat, color)
         notification(surveillance, etat)
+
+        log = new Log()
+            .type(1)
+            .evenement(Log.EVENTS.INFO)
+            .URI(`${surveillance.adresse} : ${surveillance.port}`)
+            .serveur(`${surveillance.nomServeur}`)
+            .donnees(surveillance.nomServeur +" "+ etat)
+            .save();
     }
     else {
         if (objetDeNotification[surveillance.id]["etat"] == etat) {
@@ -132,6 +157,14 @@ function casDePing(surveillance, etat, color) {
         else {
             faireVerification(surveillance, etat, color)
             notification(surveillance, etat)
+
+            log = new Log()
+                .type(1)
+                .evenement(Log.EVENTS.INFO)
+                .URI(`${surveillance.adresse} : ${surveillance.port}`)
+                .serveur(`${surveillance.nomServeur}`)
+                .donnees(surveillance.nomServeur + " " + etat)
+                .save();
         }
     }
 
@@ -153,7 +186,7 @@ function ping(surveillance) {
                 // Gestion de l'erreur
                 casDePing(surveillance,"inactif","red")  
                 if (objetDeNotification[surveillance.id]["compteur"] < surveillance.actions.length) {
-                    executerAction(surveillance.actions[objetDeNotification[surveillance.id]["compteur"]])
+                    executerAction(surveillance.actions[objetDeNotification[surveillance.id]["compteur"]], surveillance, objetDeNotification[surveillance.id]["compteur"]+1)
                     objetDeNotification[surveillance.id]["compteur"]++}
                 };
                 
@@ -179,14 +212,30 @@ function notification(surveillance, etat){
     )
 }
 
-function executerAction(action) {
+function executerAction(action, surveillance , compteur) {
     if (fs.existsSync(action.fichier)){
         require('child_process')
-        .exec(`cmd /k start ${action.fichier}`)}
-    else{
+        .exec(`cmd /k start ${action.fichier}`)
+        
+        log = new Log()
+            .type(1)
+            .evenement(Log.EVENTS.DEMARRAGE)
+            .URI(`${surveillance.adresse} : ${surveillance.port}`)
+            .serveur(`${surveillance.nomServeur}`)
+            .donnees(surveillance.nomServeur+" "+compteur+"ième fois inactif. " +"Démarrage de " + action.fichier)
+            .save();
+    }else{
         const notifier = require('node-notifier');
         const path = require('path');
-
+        
+        log = new Log()
+            .type(1)
+            .evenement(Log.EVENTS.ERREUR)
+            .URI(`${surveillance.adresse} : ${surveillance.port}`)
+            .serveur(`${surveillance.nomServeur}`)
+            .donnees(surveillance.nomServeur + " " + compteur + "ième fois inactif. " + action.fichier + " erreur de lancement")
+            .save();
+        
         notifier.notify(
             {
                 title: 'E-Dip Monitor',
@@ -312,38 +361,38 @@ function pop_upSurveillanceInitial(){
     
 }
 
-
+const creerSurveillance = () => {
+    let serveurInfos = {
+        id: "sv-0" + listeSurveillances.length,
+        nomServeur: document.getElementById("serveur1").value,
+        adresse: document.getElementById("address1").value,
+        port: document.getElementById("port1").value,
+        min: document.getElementById("min").value,
+        sec: document.getElementById("sec").value,
+        actions: listeDesActions('actions')
+    }
+    listeSurveillances.push(serveurInfos)
+    log = new Log()
+        .type(1)
+        .evenement(Log.EVENTS.CREATION)
+        .URI(`${serveurInfos.adresse} : ${serveurInfos.port}`)
+        .serveur(`${serveurInfos.nomServeur}`)
+        .donnees("Création de " + serveurInfos.nomServeur)
+        .save();
+    afficherSurveillance(serveurInfos)
+}
 // ENREGISTRER SURVEILLANCE
 let enregistrerSurveillance = () => {
-    let serveurInfos
     if (listeSurveillances.length === 0) {
-        serveurInfos = {
-            id: "sv-0" + listeSurveillances.length,
-            nomServeur: document.getElementById("serveur1").value,
-            adresse: document.getElementById("address1").value,
-            port: document.getElementById("port1").value,
-            min: document.getElementById("min").value,
-            sec: document.getElementById("sec").value,
-            actions : listeDesActions('actions')
-        }
-        listeSurveillances.push(serveurInfos)
+        creerSurveillance()
     } else {
         let b = listeSurveillances
         b = b.filter(i => i.nomServeur == document.getElementById("serveur1").value)
         if (b.length === 0) {
-            serveurInfos = {
-                id : "sv-0" +listeSurveillances.length,
-                nomServeur: document.getElementById("serveur1").value,
-                adresse: document.getElementById("address1").value,
-                port: document.getElementById("port1").value,
-                min: document.getElementById("min").value,
-                sec: document.getElementById("sec").value,
-                actions: listeDesActions('actions')
-            }
-            listeSurveillances.push(serveurInfos)
+            creerSurveillance()
         }
     }
-    afficherSurveillance(serveurInfos)
+
     const fs = require('fs')
     let son = JSON.stringify(listeSurveillances, null, 2)
     fs.writeFileSync('data/surveillances.json', son)
@@ -361,6 +410,14 @@ let modifierSurveillance = () => {
     serveur.min = document.getElementById("minSurveiller").value,
     serveur.sec = document.getElementById("secSurveiller").value,
     serveur.actions = listeDesActions('actionsSurveiller')
+
+    log = new Log()
+        .type(1)
+        .evenement(Log.EVENTS.MODIFICATION)
+        .URI(`${serveur.adresse} : ${serveur.port}`)
+        .serveur(`${serveur.nomServeur}`)
+        .donnees("Modification de " + serveur.nomServeur)
+        .save();
 
     modifierPing(serveur)
     afficheNomSurveillance(serveur)
@@ -384,6 +441,13 @@ let supprimerSurveillance = () => {
     fs.writeFileSync('data/surveillances.json', son)
     console.log(listeSurveillances)
     afficheNomSurveillance()
+    log = new Log()
+        .type(1)
+        .evenement(Log.EVENTS.SUPRESSION)
+        .URI(`${serveur.adresse} : ${serveur.port}`)
+        .serveur(`${serveur.nomServeur}`)
+        .donnees("Supression de " + serveur.nomServeur)
+        .save();
 }
 
 
