@@ -8,7 +8,7 @@
         "rebuild": "electron-rebuild"
     },
     "author": "KOUAKOU Mouahé",
-    "contributors": ["DELI Dro <deli-dro@live.fr> (linkedin.com/in/DeliDro)"]
+    "contributors": ["DELI Dro <deli-dro@live.fr> (https://linkedin.com/in/deli-dro)"]
     "license": "MIT",
     "dependencies": {
         "electron-rebuild": "^1.11.0",
